@@ -1,0 +1,1007 @@
+#
+# This is the Arithmetic logic unit of the 8080 processor
+#
+# Inputs 0-7  are the data1 inputs
+# Inputs 8-15 are the data2 inputs
+# Input 20 is the carry flag
+# Input 21 is the zero flag
+# Input 22 is the sign flag
+# Input 23 is the parity flag
+# Input 16 sets the data1 inputs to the data1 inputs
+# Inputs 24-31 select the operation.
+# Values are:
+#
+# Outputs 0-7 are the data outputs
+# Output 8 is the carry flag
+# Output 9 is the zero flag
+# Output 10 is the sign flag
+# Output 11 is the parity flag
+# Output 16 confirms instruction recognised
+
+8BIT_ADDSUB=adder
+8x1AND=ander
+8x1OR=orer
+8x1XOR=xorer
+ROTATE=rotater
+8BUFFER=buf
+#8INVERTOR=INVERT
+#
+OR_GATE=leave_all_flags(4)
+OR_GATE=leave_carry_flag(4)
+OR_GATE=leave_zero_flag(4)
+OR_GATE=leave_sign_flag(4)
+OR_GATE=leave_parity_flag(4)
+OR_GATE=adder_rotate_carry_sel_or
+#
+# Selects the output that is used for flag calculations
+#
+8-1SELECT=intermediate_output_sel0
+8-1SELECT=intermediate_output_sel1
+8-1SELECT=intermediate_output_sel2
+8-1SELECT=intermediate_output_sel3
+8-1SELECT=intermediate_output_sel4
+8-1SELECT=intermediate_output_sel5
+8-1SELECT=intermediate_output_sel6
+8-1SELECT=intermediate_output_sel7
+#
+# Selects the final output - i.e. for CMP operation this will
+# be the second input value.
+#
+2-1SELECT=final_output_sel0
+2-1SELECT=final_output_sel1
+2-1SELECT=final_output_sel2
+2-1SELECT=final_output_sel3
+2-1SELECT=final_output_sel4
+2-1SELECT=final_output_sel5
+2-1SELECT=final_output_sel6
+2-1SELECT=final_output_sel7
+#
+4-1SELECT=input_data_sel0
+4-1SELECT=input_data_sel1
+4-1SELECT=input_data_sel2
+4-1SELECT=input_data_sel3
+4-1SELECT=input_data_sel4
+4-1SELECT=input_data_sel5
+4-1SELECT=input_data_sel6
+4-1SELECT=input_data_sel7
+#
+4-1SELECT=daa_adder_input0
+4-1SELECT=daa_adder_input1
+4-1SELECT=daa_adder_input2
+4-1SELECT=daa_adder_input3
+4-1SELECT=daa_adder_input4
+4-1SELECT=daa_adder_input5
+4-1SELECT=daa_adder_input6
+4-1SELECT=daa_adder_input7
+#
+2-1SELECT=prime_input_data_sel0
+2-1SELECT=prime_input_data_sel1
+2-1SELECT=prime_input_data_sel2
+2-1SELECT=prime_input_data_sel3
+2-1SELECT=prime_input_data_sel4
+2-1SELECT=prime_input_data_sel5
+2-1SELECT=prime_input_data_sel6
+2-1SELECT=prime_input_data_sel7
+#
+2-1SELECT=adder_rotate_carry_sel
+4-1SELECT=carry_sel
+2-1SELECT=zero_sel
+2-1SELECT=sign_sel
+2-1SELECT=parity_sel
+#
+INVERTOR=comp_carry
+#
+comp_carry:0 = INPUT:20
+#
+buf:0 = INPUT:8
+buf:1 = INPUT:9
+buf:2 = INPUT:10
+buf:3 = INPUT:11
+buf:4 = INPUT:12
+buf:5 = INPUT:13
+buf:6 = INPUT:14
+buf:7 = INPUT:15
+#
+#
+input_data_sel0:0 = INPUT:8
+input_data_sel1:0 = INPUT:9
+input_data_sel2:0 = INPUT:10
+input_data_sel3:0 = INPUT:11
+input_data_sel4:0 = INPUT:12
+input_data_sel5:0 = INPUT:13
+input_data_sel6:0 = INPUT:14
+input_data_sel7:0 = INPUT:15
+#
+#
+input_data_sel0:1 = HIGH
+input_data_sel1:1 = LOW
+input_data_sel2:1 = LOW
+input_data_sel3:1 = LOW
+input_data_sel4:1 = LOW
+input_data_sel5:1 = LOW
+input_data_sel6:1 = LOW
+input_data_sel7:1 = LOW
+#
+input_data_sel0:2 = HIGH
+input_data_sel1:2 = HIGH
+input_data_sel2:2 = HIGH
+input_data_sel3:2 = HIGH
+input_data_sel4:2 = HIGH
+input_data_sel5:2 = HIGH
+input_data_sel6:2 = HIGH
+input_data_sel7:2 = HIGH
+#
+input_data_sel0:3 = daa_adder_input0:0
+input_data_sel1:3 = daa_adder_input1:0
+input_data_sel2:3 = daa_adder_input2:0
+input_data_sel3:3 = daa_adder_input3:0
+input_data_sel4:3 = daa_adder_input4:0
+input_data_sel5:3 = daa_adder_input5:0
+input_data_sel6:3 = daa_adder_input6:0
+input_data_sel7:3 = daa_adder_input7:0
+#
+prime_input_data_sel0:0 = INPUT:0
+prime_input_data_sel1:0 = INPUT:1
+prime_input_data_sel2:0 = INPUT:2
+prime_input_data_sel3:0 = INPUT:3
+prime_input_data_sel4:0 = INPUT:4
+prime_input_data_sel5:0 = INPUT:5
+prime_input_data_sel6:0 = INPUT:6
+prime_input_data_sel7:0 = INPUT:7
+#
+prime_input_data_sel0:1 = INPUT:8
+prime_input_data_sel1:1 = INPUT:9
+prime_input_data_sel2:1 = INPUT:10
+prime_input_data_sel3:1 = INPUT:11
+prime_input_data_sel4:1 = INPUT:12
+prime_input_data_sel5:1 = INPUT:13
+prime_input_data_sel6:1 = INPUT:14
+prime_input_data_sel7:1 = INPUT:15
+#
+prime_input_data_sel0:8 = INPUT:16
+prime_input_data_sel1:8 = INPUT:16
+prime_input_data_sel2:8 = INPUT:16
+prime_input_data_sel3:8 = INPUT:16
+prime_input_data_sel4:8 = INPUT:16
+prime_input_data_sel5:8 = INPUT:16
+prime_input_data_sel6:8 = INPUT:16
+prime_input_data_sel7:8 = INPUT:16
+#
+adder:0 = prime_input_data_sel0:0
+adder:1 = prime_input_data_sel1:0
+adder:2 = prime_input_data_sel2:0
+adder:3 = prime_input_data_sel3:0
+adder:4 = prime_input_data_sel4:0
+adder:5 = prime_input_data_sel5:0
+adder:6 = prime_input_data_sel6:0
+adder:7 = prime_input_data_sel7:0
+#
+adder:8 = input_data_sel0:0
+adder:9 = input_data_sel1:0
+adder:10 = input_data_sel2:0
+adder:11 = input_data_sel3:0
+adder:12 = input_data_sel4:0
+adder:13 = input_data_sel5:0
+adder:14 = input_data_sel6:0
+adder:15 = input_data_sel7:0
+#
+OR_GATE=input_data_sel_or_0
+OR_GATE=input_data_sel_or_1
+#
+input_data_sel0:8 = input_data_sel_or_0:0
+input_data_sel1:8 = input_data_sel_or_0:0
+input_data_sel2:8 = input_data_sel_or_0:0
+input_data_sel3:8 = input_data_sel_or_0:0
+input_data_sel4:8 = input_data_sel_or_0:0
+input_data_sel5:8 = input_data_sel_or_0:0
+input_data_sel6:8 = input_data_sel_or_0:0
+input_data_sel7:8 = input_data_sel_or_0:0
+#
+input_data_sel0:9 = input_data_sel_or_1:0
+input_data_sel1:9 = input_data_sel_or_1:0
+input_data_sel2:9 = input_data_sel_or_1:0
+input_data_sel3:9 = input_data_sel_or_1:0
+input_data_sel4:9 = input_data_sel_or_1:0
+input_data_sel5:9 = input_data_sel_or_1:0
+input_data_sel6:9 = input_data_sel_or_1:0
+input_data_sel7:9 = input_data_sel_or_1:0
+#
+# This is for the DAA
+AND_GATE=daa_first_nibble
+AND_GATE=daa_second_nibble
+#
+daa_adder_input0:0 = LOW
+daa_adder_input1:0 = LOW
+daa_adder_input2:0 = LOW
+daa_adder_input3:0 = LOW
+daa_adder_input4:0 = LOW
+daa_adder_input5:0 = LOW
+daa_adder_input6:0 = LOW
+daa_adder_input7:0 = LOW
+#
+daa_adder_input0:1 = LOW
+daa_adder_input1:1 = HIGH
+daa_adder_input2:1 = HIGH
+daa_adder_input3:1 = LOW
+daa_adder_input4:1 = LOW
+daa_adder_input5:1 = LOW
+daa_adder_input6:1 = LOW
+daa_adder_input7:1 = LOW
+#
+daa_adder_input0:2 = LOW
+daa_adder_input1:2 = LOW
+daa_adder_input2:2 = LOW
+daa_adder_input3:2 = LOW
+daa_adder_input4:2 = LOW
+daa_adder_input5:2 = HIGH
+daa_adder_input6:2 = HIGH
+daa_adder_input7:2 = LOW
+#
+daa_adder_input0:3 = LOW
+daa_adder_input1:3 = HIGH
+daa_adder_input2:3 = HIGH
+daa_adder_input3:3 = LOW
+daa_adder_input4:3 = LOW
+daa_adder_input5:3 = HIGH
+daa_adder_input6:3 = HIGH
+daa_adder_input7:3 = LOW
+#
+#OR_GATE=daa_input_select_or_0
+#OR_GATE=daa_input_select_or_1
+#
+daa_adder_input0:8 = daa_first_nibble:0
+daa_adder_input1:8 = daa_first_nibble:0
+daa_adder_input2:8 = daa_first_nibble:0
+daa_adder_input3:8 = daa_first_nibble:0
+daa_adder_input4:8 = daa_first_nibble:0
+daa_adder_input5:8 = daa_first_nibble:0
+daa_adder_input6:8 = daa_first_nibble:0
+daa_adder_input7:8 = daa_first_nibble:0
+#
+daa_adder_input0:9 = daa_second_nibble:0
+daa_adder_input1:9 = daa_second_nibble:0
+daa_adder_input2:9 = daa_second_nibble:0
+daa_adder_input3:9 = daa_second_nibble:0
+daa_adder_input4:9 = daa_second_nibble:0
+daa_adder_input5:9 = daa_second_nibble:0
+daa_adder_input6:9 = daa_second_nibble:0
+daa_adder_input7:9 = daa_second_nibble:0
+# This is the carry input
+#
+AND_GATE=carry_in_and
+OR_GATE=carry_in_or(4)
+carry_in_and:0 = INPUT:20
+carry_in_and:1 = carry_in_or:0
+adder:16 = carry_in_and:0
+#
+#
+OR_GATE=add_or(8)
+OR_GATE=sub_or(8)
+OR_GATE=sbb_or
+# This is the instruction to subtract
+adder:17 = sub_or:0
+#
+# This is the instruction to subtract with borrow
+#
+adder:18 = sbb_or:0
+#
+ander:0 = INPUT:0
+ander:1 = INPUT:1
+ander:2 = INPUT:2
+ander:3 = INPUT:3
+ander:4 = INPUT:4
+ander:5 = INPUT:5
+ander:6 = INPUT:6
+ander:7 = INPUT:7
+#
+ander:8 = INPUT:8
+ander:9 = INPUT:9
+ander:10 = INPUT:10
+ander:11 = INPUT:11
+ander:12 = INPUT:12
+ander:13 = INPUT:13
+ander:14 = INPUT:14
+ander:15 = INPUT:15
+#
+orer:0 = INPUT:0
+orer:1 = INPUT:1
+orer:2 = INPUT:2
+orer:3 = INPUT:3
+orer:4 = INPUT:4
+orer:5 = INPUT:5
+orer:6 = INPUT:6
+orer:7 = INPUT:7
+#
+orer:8 = INPUT:8
+orer:9 = INPUT:9
+orer:10 = INPUT:10
+orer:11 = INPUT:11
+orer:12 = INPUT:12
+orer:13 = INPUT:13
+orer:14 = INPUT:14
+orer:15 = INPUT:15
+#
+xorer:0 = INPUT:0
+xorer:1 = INPUT:1
+xorer:2 = INPUT:2
+xorer:3 = INPUT:3
+xorer:4 = INPUT:4
+xorer:5 = INPUT:5
+xorer:6 = INPUT:6
+xorer:7 = INPUT:7
+#
+xorer:8 = INPUT:8
+xorer:9 = INPUT:9
+xorer:10 = INPUT:10
+xorer:11 = INPUT:11
+xorer:12 = INPUT:12
+xorer:13 = INPUT:13
+xorer:14 = INPUT:14
+xorer:15 = INPUT:15
+#
+# Rotator acts on the second input:
+rotater:0 = INPUT:8
+rotater:1 = INPUT:9
+rotater:2 = INPUT:10
+rotater:3 = INPUT:11
+rotater:4 = INPUT:12
+rotater:5 = INPUT:13
+rotater:6 = INPUT:14
+rotater:7 = INPUT:15
+#
+# This is the carry
+rotater:8 = INPUT:20
+# This is the type of rotate
+rotater:10 = INPUT:27
+rotater:11 = INPUT:28
+#
+intermediate_output_sel0:0 = adder:0
+intermediate_output_sel0:1 = ander:0
+intermediate_output_sel0:2 = orer:0
+intermediate_output_sel0:3 = xorer:0
+intermediate_output_sel0:5 = buf:0
+intermediate_output_sel0:6 = INVERT:0
+intermediate_output_sel0:7 = rotater:0
+#
+#
+intermediate_output_sel1:0 = adder:1
+intermediate_output_sel1:1 = ander:1
+intermediate_output_sel1:2 = orer:1
+intermediate_output_sel1:3 = xorer:1
+intermediate_output_sel1:5 = buf:1
+intermediate_output_sel1:6 = INVERT:1
+intermediate_output_sel1:7 = rotater:1
+#
+intermediate_output_sel2:0 = adder:2
+intermediate_output_sel2:1 = ander:2
+intermediate_output_sel2:2 = orer:2
+intermediate_output_sel2:3 = xorer:2
+intermediate_output_sel2:5 = buf:2
+intermediate_output_sel2:6 = INVERT:2
+intermediate_output_sel2:7 = rotater:2
+#
+intermediate_output_sel3:0 = adder:3
+intermediate_output_sel3:1 = ander:3
+intermediate_output_sel3:2 = orer:3
+intermediate_output_sel3:3 = xorer:3
+intermediate_output_sel3:5 = buf:3
+intermediate_output_sel3:6 = INVERT:3
+intermediate_output_sel3:7 = rotater:3
+#
+intermediate_output_sel4:0 = adder:4
+intermediate_output_sel4:1 = ander:4
+intermediate_output_sel4:2 = orer:4
+intermediate_output_sel4:3 = xorer:4
+intermediate_output_sel4:5 = buf:4
+intermediate_output_sel4:6 = INVERT:4
+intermediate_output_sel4:7 = rotater:4
+#
+intermediate_output_sel5:0 = adder:5
+intermediate_output_sel5:1 = ander:5
+intermediate_output_sel5:2 = orer:5
+intermediate_output_sel5:3 = xorer:5
+intermediate_output_sel5:5 = buf:5
+intermediate_output_sel5:6 = INVERT:5
+intermediate_output_sel5:7 = rotater:5
+#
+intermediate_output_sel6:0 = adder:6
+intermediate_output_sel6:1 = ander:6
+intermediate_output_sel6:2 = orer:6
+intermediate_output_sel6:3 = xorer:6
+intermediate_output_sel6:5 = buf:6
+intermediate_output_sel6:6 = INVERT:6
+intermediate_output_sel6:7 = rotater:6
+#
+intermediate_output_sel7:0 = adder:7
+intermediate_output_sel7:1 = ander:7
+intermediate_output_sel7:2 = orer:7
+intermediate_output_sel7:3 = xorer:7
+intermediate_output_sel7:5 = buf:7
+intermediate_output_sel7:6 = INVERT:7
+intermediate_output_sel7:7 = rotater:7
+#
+OR_GATE=intermediate_output_sel0_or(8)
+OR_GATE=intermediate_output_sel1_or(8)
+OR_GATE=intermediate_output_sel2_or(8)
+OR_GATE=set_carry
+#
+intermediate_output_sel0:8 = intermediate_output_sel0_or:0
+intermediate_output_sel0:9 = intermediate_output_sel1_or:0
+intermediate_output_sel0:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel1:8 = intermediate_output_sel0_or:0
+intermediate_output_sel1:9 = intermediate_output_sel1_or:0
+intermediate_output_sel1:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel2:8 = intermediate_output_sel0_or:0
+intermediate_output_sel2:9 = intermediate_output_sel1_or:0
+intermediate_output_sel2:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel3:8 = intermediate_output_sel0_or:0
+intermediate_output_sel3:9 = intermediate_output_sel1_or:0
+intermediate_output_sel3:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel4:8 = intermediate_output_sel0_or:0
+intermediate_output_sel4:9 = intermediate_output_sel1_or:0
+intermediate_output_sel4:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel5:8 = intermediate_output_sel0_or:0
+intermediate_output_sel5:9 = intermediate_output_sel1_or:0
+intermediate_output_sel5:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel6:8 = intermediate_output_sel0_or:0
+intermediate_output_sel6:9 = intermediate_output_sel1_or:0
+intermediate_output_sel6:10 = intermediate_output_sel2_or:0
+#
+intermediate_output_sel7:8 = intermediate_output_sel0_or:0
+intermediate_output_sel7:9 = intermediate_output_sel1_or:0
+intermediate_output_sel7:10 = intermediate_output_sel2_or:0
+#
+final_output_sel0:0 = intermediate_output_sel0:0
+final_output_sel1:0 = intermediate_output_sel1:0
+final_output_sel2:0 = intermediate_output_sel2:0
+final_output_sel3:0 = intermediate_output_sel3:0
+final_output_sel4:0 = intermediate_output_sel4:0
+final_output_sel5:0 = intermediate_output_sel5:0
+final_output_sel6:0 = intermediate_output_sel6:0
+final_output_sel7:0 = intermediate_output_sel7:0
+#
+final_output_sel0:1 = buf:0
+final_output_sel1:1 = buf:1
+final_output_sel2:1 = buf:2
+final_output_sel3:1 = buf:3
+final_output_sel4:1 = buf:4
+final_output_sel5:1 = buf:5
+final_output_sel6:1 = buf:6
+final_output_sel7:1 = buf:7
+#
+OR_GATE=final_output_sel_or
+#
+final_output_sel0:8 = final_output_sel_or:0
+final_output_sel1:8 = final_output_sel_or:0
+final_output_sel2:8 = final_output_sel_or:0
+final_output_sel3:8 = final_output_sel_or:0
+final_output_sel4:8 = final_output_sel_or:0
+final_output_sel5:8 = final_output_sel_or:0
+final_output_sel6:8 = final_output_sel_or:0
+final_output_sel7:8 = final_output_sel_or:0
+#
+# Recognise instructions
+OR_GATE=instr_or(16)
+OR_GATE=immed_or(8)
+OR_GATE=recog_or
+recog_or:0 = instr_or:0
+recog_or:1 = immed_or:0
+#
+SECTION=INSTRUCTIONS
+  AND_GATE=add(4)
+  AND_GATE=sub(4)
+  AND_GATE=and(5)
+  AND_GATE=or(5)
+  AND_GATE=xor(5)
+  AND_GATE=cmp(5)
+  AND_GATE=inr(5)
+  AND_GATE=dcr(5)
+  AND_GATE=cma_daa(7)
+  AND_GATE=cma(2)
+  AND_GATE=daa(2)
+  AND_GATE=cmc(8)
+  AND_GATE=stc(8)
+  AND_GATE=rot(6)
+#
+# Recognise immediate instructions
+#
+  SECTION=IMMEDIATE
+    AND_GATE=immediate(5)
+    immediate:0 = INPUT:31
+    immediate:1 = INPUT:30
+    immediate:2 = INPUT:26
+    immediate:3 = INPUT:25
+    immediate:4 = INVERT:24
+
+# ADI and ACI
+    SECTION=ADI
+      AND_GATE=adi(3)
+      adi:0 = immediate:0
+      adi:1 = INVERT:28
+      adi:2 = INVERT:29
+
+      immed_or:0 = adi:0
+
+      AND_GATE=carry_and
+      carry_and:0 = adi:0
+      carry_and:1 = INPUT:27
+      carry_in_or:0 = carry_and:0  
+
+      add_or:0 = adi:0
+
+
+    END_SECTION
+
+# SUI and SBI
+    SECTION=SUI
+      AND_GATE=sui(3)
+      sui:0 = immediate:0
+      sui:1 = INPUT:28
+      sui:2 = INVERT:29
+
+      immed_or:1 = sui:0
+
+      AND_GATE=carry_and
+      carry_and:0 = sui:0
+      carry_and:1 = INPUT:27
+      carry_in_or:1 = carry_and:0
+
+      sub_or:0 = sui:0
+      sbb_or:0 = carry_and:0
+
+
+    END_SECTION
+
+    SECTION=ANI
+
+      AND_GATE=ani(4)
+      ani:0 = immediate:0
+      ani:1 = INVERT:27
+      ani:2 = INVERT:28
+      ani:3 = INPUT:29
+
+      # Set the 0 pin on the intermediate_output_selector to 1 to intermediate_output_select the AND operation
+      intermediate_output_sel0_or:0 = ani:0
+      immed_or:2 = ani:0
+
+    END_SECTION
+
+    SECTION=XRI
+
+      AND_GATE=xri(4)
+      xri:0 = immediate:0
+      xri:1 = INPUT:27
+      xri:2 = INVERT:28
+      xri:3 = INPUT:29
+
+      # Set the 0 and 1 pin on the intermediate_output_selector to 1 to intermediate_output_select the XOR_GATE operation
+      intermediate_output_sel0_or:1 = xri:0
+      intermediate_output_sel1_or:0 = xri:0
+
+      immed_or:3 = xri:0
+
+    END_SECTION
+
+    SECTION=ORI
+
+      AND_GATE=ori(4)
+      ori:0 = immediate:0
+      ori:1 = INVERT:27
+      ori:2 = INPUT:28
+      ori:3 = INPUT:29
+
+      #  Set the 1 pin on the intermediate_output_selector to 1 to intermediate_output_select the OR operation
+      intermediate_output_sel1_or:1 = ori:0
+
+      immed_or:4 = ori:0
+
+    END_SECTION
+
+    SECTION=CPI
+
+      AND_GATE=cpi(4)
+      cpi:0 = immediate:0
+      cpi:1 = INPUT:27
+      cpi:2 = INPUT:28
+      cpi:3 = INPUT:29
+
+      # Set the 0 and 2 pin on the intermediate_output_selector to 1 to intermediate_output_select the CMP operation
+      final_output_sel_or:0 = cpi:0
+#      intermediate_output_sel0_or:2 = cpi:0
+#      intermediate_output_sel2_or:0 = cpi:0
+      #
+      sub_or:1 = cpi:0
+
+      immed_or:5 = cpi:0
+
+    END_SECTION
+
+  END_SECTION
+
+  SECTION=CMA_DAA
+
+    cma_daa:0 = INPUT:24
+    cma_daa:1 = INPUT:25
+    cma_daa:2 = INPUT:26
+    cma_daa:3 = INVERT:28
+    cma_daa:4 = INPUT:29
+    cma_daa:5 = INVERT:30
+    cma_daa:6 = INVERT:31
+    instr_or:0 = cma_daa:0 
+
+# CMA
+    SECTION=CMA
+#
+      cma:0 = cma_daa:0
+      cma:1 = INPUT:27
+#
+      intermediate_output_sel1_or:2 = cma:0 
+      intermediate_output_sel2_or:1 = cma:0 
+
+#     No effect on flags
+      leave_all_flags:0 = cma:0
+
+    END_SECTION
+
+    SECTION=DAA
+
+      daa:0 = cma_daa:0
+      daa:1 = INVERT:27
+
+      # Input to adder comes from daa selector
+
+      input_data_sel_or_0:0 = daa:0
+      input_data_sel_or_1:0 = daa:0
+
+      # Now just need to work out which
+
+      # First nibble
+      OR_GATE=daa_1_2
+      daa_1_2:0 = INPUT:1
+      daa_1_2:1 = INPUT:2
+      daa_first_nibble:0 = daa_1_2:0
+      daa_first_nibble:1 = INPUT:3
+
+      # Second nibble
+      AND_GATE=daa_4_c
+      daa_4_c:0 = daa_first_nibble:0
+      daa_4_c:1 = INPUT:4
+      OR_GATE=daa_5_6_c(3)
+      daa_5_6_c:0 = daa_4_c:0
+      daa_5_6_c:1 = INPUT:5
+      daa_5_6_c:2 = INPUT:6
+
+      daa_second_nibble:0 = daa_5_6_c:0
+      daa_second_nibble:1 = INPUT:7
+      #
+
+      add_or:1 = daa:0
+#      daa_input_select_or_0:0 = daa_first_nibble:0
+#      daa_input_select_or_1:0 = daa_second_nibble:0
+
+    END_SECTION
+
+  END_SECTION
+  SECTION=CMC
+#
+    cmc:0 = INPUT:24
+    cmc:1 = INPUT:25
+    cmc:2 = INPUT:26
+    cmc:3 = INPUT:27
+    cmc:4 = INPUT:28
+    cmc:5 = INPUT:29
+    cmc:6 = INVERT:30
+    cmc:7 = INVERT:31
+#
+    instr_or:1 = cmc:0
+    intermediate_output_sel0_or:3 = cmc:0
+    intermediate_output_sel2_or:2 = cmc:0
+
+#   No effect on flags
+    leave_carry_flag:0 = cmc:0
+    leave_zero_flag:0 = cmc:0
+    leave_sign_flag:0 = cmc:0
+    leave_parity_flag:0 = cmc:0
+    set_carry:0 = cmc:0
+
+  END_SECTION
+
+  SECTION=STC
+
+    stc:0 = INPUT:24
+    stc:1 = INPUT:25
+    stc:2 = INPUT:26
+    stc:3 = INVERT:27
+    stc:4 = INPUT:28
+    stc:5 = INPUT:29
+    stc:6 = INVERT:30
+    stc:7 = INVERT:31
+
+#
+    instr_or:2 = stc:0
+    intermediate_output_sel0_or:4 = stc:0
+    intermediate_output_sel2_or:3 = stc:0
+
+#   No effect on flags
+    leave_zero_flag:1 = stc:0
+    leave_sign_flag:1 = stc:0
+    leave_parity_flag:1 = stc:0
+    set_carry:1 = stc:0
+#
+  END_SECTION
+
+
+# ADD and ADC
+  SECTION=ADD
+    add:0 = INVERT:28
+    add:1 = INVERT:29
+    add:2 = INVERT:30
+    add:3 = INPUT:31
+#
+    AND_GATE=carry_and
+    carry_and:0 = add:0
+    carry_and:1 = INPUT:27
+    carry_in_or:2 = carry_and:0  
+    instr_or:3 = add:0
+
+    add_or:2 = add:0
+  END_SECTION
+# SUB and SBB
+  SECTION=SUB
+    sub:0 = INPUT:28
+    sub:1 = INVERT:29
+    sub:2 = INVERT:30
+    sub:3 = INPUT:31
+#
+    AND_GATE=carry_sub
+    carry_sub:0 = sub:0
+    carry_sub:1 = INPUT:27
+    carry_in_or:3 = carry_sub:0
+    instr_or:4 = sub:0
+    sub_or:2 = sub:0
+    sbb_or:1 = carry_sub:0
+  END_SECTION
+# AND
+  SECTION=AND
+    and:0 = INVERT:27
+    and:1 = INVERT:28
+    and:2 = INPUT:29
+    and:3 = INVERT:30
+    and:4 = INPUT:31
+#   Set the 0 pin on the intermediate_output_selector to 1 to intermediate_output_select the AND operation
+    intermediate_output_sel0_or:5 = and:0
+
+    instr_or:5 = and:0
+  END_SECTION
+  SECTION=XOR_GATE
+    xor:0 = INPUT:27
+    xor:1 = INVERT:28
+    xor:2 = INPUT:29
+    xor:3 = INVERT:30
+    xor:4 = INPUT:31
+#   Set the 0 and 1 pin on the intermediate_output_selector to 1 to intermediate_output_select the XOR_GATE operation
+    intermediate_output_sel0_or:6 = xor:0 
+    intermediate_output_sel1_or:4 = xor:0 
+#
+    instr_or:6 = xor:0
+  END_SECTION
+  SECTION=OR
+    or:0 = INVERT:27
+    or:1 = INPUT:28
+    or:2 = INPUT:29
+    or:3 = INVERT:30
+    or:4 = INPUT:31
+#   Set the 1 pin on the intermediate_output_selector to 1 to intermediate_output_select the OR operation
+    intermediate_output_sel1_or:5 = or:0
+#
+    instr_or:7 = or:0
+  END_SECTION
+  SECTION=CMP
+    cmp:0 = INPUT:27
+    cmp:1 = INPUT:28
+    cmp:2 = INPUT:29
+    cmp:3 = INVERT:30
+    cmp:4 = INPUT:31
+#   Set the 0 and 2 pin on the intermediate_output_selector to 1 to intermediate_output_select the CMP operation
+    final_output_sel_or:1 = cmp:0
+#    intermediate_output_sel0_or:7 = cmp:0 
+#    intermediate_output_sel2_or:4 = cmp:0 
+#
+    sub_or:3 = cmp:0
+    instr_or:8 = cmp:0
+  END_SECTION
+  SECTION=INR
+    inr:0 = INVERT:24
+    inr:1 = INVERT:25
+    inr:2 = INPUT:26
+    inr:3 = INVERT:30
+    inr:4 = INVERT:31
+#
+    input_data_sel_or_0:1 = inr:0
+#
+    instr_or:9 = inr:0
+    add_or:3 = inr:0
+  END_SECTION
+  SECTION=DCR
+    dcr:0 = INPUT:24
+    dcr:1 = INVERT:25
+    dcr:2 = INPUT:26
+    dcr:3 = INVERT:30
+    dcr:4 = INVERT:31
+#
+    input_data_sel_or_1:1 = dcr:0
+#
+#    sub_or:4 = dcr:0
+    instr_or:10 = dcr:0
+  END_SECTION
+
+  SECTION=ROTATE
+
+    rot:0 = INPUT:24
+    rot:1 = INPUT:25
+    rot:2 = INPUT:26
+    rot:3 = INVERT:29
+    rot:4 = INVERT:30
+    rot:5 = INVERT:31
+
+    intermediate_output_sel0_or:7 = rot:0
+    intermediate_output_sel1_or:6 = rot:0
+    intermediate_output_sel2_or:4 = rot:0
+
+    adder_rotate_carry_sel_or:0 = rot:0
+
+    instr_or:11 = rot:0
+
+  END_SECTION
+
+#
+
+END_SECTION
+
+# CARRY FLAG
+
+AND_GATE=carry_flag_add
+carry_flag_add:0 = add_or:0
+carry_flag_add:1 = adder:8
+
+AND_GATE=carry_flag_sub
+INVERTOR=carry_inv
+carry_inv:0 = adder:8
+carry_flag_sub:0 = sub_or:0
+carry_flag_sub:1 = carry_inv:0
+
+OR_GATE=carry_flag_calc
+carry_flag_calc:0 = carry_flag_add:0
+carry_flag_calc:1 = carry_flag_sub:0
+
+#
+# ZERO FLAG
+#
+8INVERTOR=output_inv
+output_inv:0 = intermediate_output_sel0:0
+output_inv:1 = intermediate_output_sel1:0
+output_inv:2 = intermediate_output_sel2:0
+output_inv:3 = intermediate_output_sel3:0
+output_inv:4 = intermediate_output_sel4:0
+output_inv:5 = intermediate_output_sel5:0
+output_inv:6 = intermediate_output_sel6:0
+output_inv:7 = intermediate_output_sel7:0
+#
+AND_GATE=zero_flag_calc(8)
+zero_flag_calc:0 = output_inv:0
+zero_flag_calc:1 = output_inv:1
+zero_flag_calc:2 = output_inv:2
+zero_flag_calc:3 = output_inv:3
+zero_flag_calc:4 = output_inv:4
+zero_flag_calc:5 = output_inv:5
+zero_flag_calc:6 = output_inv:6
+zero_flag_calc:7 = output_inv:7
+#
+# PARITY FLAG
+#
+XOR_GATE=xor1
+XOR_GATE=xor2
+XOR_GATE=xor3
+XOR_GATE=xor4
+XOR_GATE=xor5
+XOR_GATE=xor6
+XOR_GATE=xor7
+INVERTOR=parity_flag_calc
+
+xor1:0 = intermediate_output_sel0:0
+xor1:1 = intermediate_output_sel1:0
+xor2:0 = intermediate_output_sel2:0
+xor2:1 = intermediate_output_sel3:0
+xor3:0 = intermediate_output_sel4:0
+xor3:1 = intermediate_output_sel5:0
+xor4:0 = intermediate_output_sel6:0
+xor4:1 = intermediate_output_sel7:0
+#
+xor5:0 = xor1:0
+xor5:1 = xor2:0
+xor6:0 = xor3:0
+xor6:1 = xor4:0
+#
+xor7:0 = xor5:0
+xor7:1 = xor6:0
+#
+parity_flag_calc:0 = xor7:0
+#
+adder_rotate_carry_sel:0 = carry_flag_calc:0
+adder_rotate_carry_sel:1 = rotater:8
+adder_rotate_carry_sel:8 = adder_rotate_carry_sel_or:0
+carry_sel:0  = adder_rotate_carry_sel:0
+zero_sel:0   = zero_flag_calc:0
+sign_sel:0   = intermediate_output_sel7:0
+parity_sel:0 = parity_flag_calc:0
+#
+carry_sel:1  = INPUT:20
+zero_sel:1   = INPUT:21
+sign_sel:1i  = INPUT:22
+parity_sel:1 = INPUT:23
+#
+carry_sel:2 = HIGH
+carry_sel:3 = comp_carry:0
+# Set carry flag based on calc or leave?
+#
+OR_GATE=no_change_carry
+no_change_carry:0 = leave_all_flags:0
+no_change_carry:1 = leave_carry_flag:0
+carry_sel:8 = no_change_carry:0
+carry_sel:9 = set_carry:0
+#
+# Set zero flag based on calc or leave?
+#
+OR_GATE=no_change_zero
+no_change_zero:0 = leave_all_flags:0
+no_change_zero:1 = leave_zero_flag:0
+zero_sel:8 = no_change_zero:0
+#
+# Set sign flag based on calc or leave?
+#
+OR_GATE=no_change_sign
+no_change_sign:0 = leave_all_flags:0
+no_change_sign:1 = leave_sign_flag:0
+sign_sel:8 = no_change_sign:0
+#
+# Set sign flag based on calc or leave?
+#
+OR_GATE=no_change_parity
+no_change_parity:0 = leave_all_flags:0
+no_change_parity:1 = leave_parity_flag:0
+parity_sel:8 = no_change_parity:0
+#
+# Set auxillary carry flag based on calc or leave
+#
+OUTPUT:0 = final_output_sel0:0
+OUTPUT:1 = final_output_sel1:0
+OUTPUT:2 = final_output_sel2:0
+OUTPUT:3 = final_output_sel3:0
+OUTPUT:4 = final_output_sel4:0
+OUTPUT:5 = final_output_sel5:0
+OUTPUT:6 = final_output_sel6:0
+OUTPUT:7 = final_output_sel7:0
+#
+#
+OUTPUT:8 = carry_sel:0
+# Zero flag
+OUTPUT:9 = zero_sel:0
+# Sign flag
+OUTPUT:10 = sign_sel:0
+#
+OUTPUT:11 = parity_sel:0
+# Auxillary carry
+OUTPUT:12 = daa_first_nibble:0
+#
+OUTPUT:16 = recog_or:0
+#
+OUTPUT:24 = intermediate_output_sel0_or:0
+OUTPUT:25 = intermediate_output_sel1_or:0
+OUTPUT:26 = intermediate_output_sel2_or:0
+

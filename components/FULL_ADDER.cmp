@@ -1,0 +1,26 @@
+#
+#
+#
+#
+# Two Nor gates
+#
+#
+HALF_ADDER=half_adder_upper
+HALF_ADDER=half_adder_lower
+OR_GATE=or_gate
+#
+half_adder_upper:0 = INPUT:0
+half_adder_lower:0 = INPUT:1
+half_adder_lower:1 = INPUT:2
+half_adder_upper:1 = half_adder_lower:0
+#
+or_gate:0 = half_adder_upper:1
+or_gate:1 = half_adder_lower:1
+#
+OUTPUT:0 = half_adder_upper:0
+OUTPUT:1 = or_gate:0
+#
+#
+#
+#
+#

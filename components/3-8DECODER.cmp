@@ -1,0 +1,71 @@
+#
+#
+# 3-8 Decoder
+# Input 0 is data input
+# input 8-10 provide the address
+# the output is the value of the data input selected by the switch
+#
+#
+#
+AND_GATE=4and_1(4)
+AND_GATE=4and_2(4)
+AND_GATE=4and_3(4)
+AND_GATE=4and_4(4)
+AND_GATE=4and_5(4)
+AND_GATE=4and_6(4)
+AND_GATE=4and_7(4)
+AND_GATE=4and_8(4)
+#
+4and_1:0 = INPUT:0
+4and_2:0 = INPUT:0
+4and_3:0 = INPUT:0
+4and_4:0 = INPUT:0
+4and_5:0 = INPUT:0
+4and_6:0 = INPUT:0
+4and_7:0 = INPUT:0
+4and_8:0 = INPUT:0
+#
+4and_2:1 = INPUT:8
+4and_4:1 = INPUT:8
+4and_6:1 = INPUT:8
+4and_8:1 = INPUT:8
+#
+4and_3:1 = INPUT:9
+4and_4:2 = INPUT:9
+4and_7:1 = INPUT:9
+4and_8:2 = INPUT:9
+#
+4and_5:1 = INPUT:10
+4and_6:2 = INPUT:10
+4and_7:2 = INPUT:10
+4and_8:3 = INPUT:10
+#
+4and_1:1 = INVERT:8
+4and_3:2 = INVERT:8
+4and_5:2 = INVERT:8
+4and_7:3 = INVERT:8
+#
+4and_1:2 = INVERT:9
+4and_2:2 = INVERT:9
+4and_5:3 = INVERT:9
+4and_6:3 = INVERT:9
+#
+4and_1:3 = INVERT:10
+4and_2:3 = INVERT:10
+4and_3:3 = INVERT:10
+4and_4:3 = INVERT:10
+#
+#
+OUTPUT:0 = 4and_1:0
+OUTPUT:1 = 4and_2:0
+OUTPUT:2 = 4and_3:0
+OUTPUT:3 = 4and_4:0
+OUTPUT:4 = 4and_5:0
+OUTPUT:5 = 4and_6:0
+OUTPUT:6 = 4and_7:0
+OUTPUT:7 = 4and_8:0
+#
+#
+#
+#
+#

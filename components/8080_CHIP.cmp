@@ -1,0 +1,613 @@
+#
+# This extracts code and data from RAM
+# To use first flip bit 1 to trigger the read of
+# the ROM into memory (then flip back)
+# Flip bit 0 to turn on.
+# Flip bit 2 to save memory.
+#
+#
+8080_DRIVER=driver
+16BIT_COUNTER=counter
+INVERTOR=inv
+8080_RAM_IF=ramif
+8080_PROC=proc
+8080_REGISTERS=registers
+OR_GATE=counter_reset
+#
+#
+driver:1 = INPUT:0
+inv:0 = INPUT:0
+# This loads the ROM
+#ramif:6 = INPUT:1
+# This writes the RAM
+#ramif:7 = INPUT:2
+
+AND_GATE=feed_driver
+feed_driver:0 = INPUT:3
+feed_driver:1 = INPUT:4
+
+driver:0 = feed_driver:0
+driver:2 = proc:0
+# This triggers a reset of the counter
+counter_reset:0 = inv:0
+counter:1 = counter_reset:0
+# The instruction for the counter to increment
+counter:0 = driver:0
+# The instruction for the code latch to latch
+ramif:1 = driver:1
+# The instruction for the address1 latch to latch
+ramif:2 = driver:2
+# The instruction for the address2 latch to latch
+ramif:3 = driver:3
+# The instruction for the data to latch
+ramif:4 = driver:4
+#
+# The instruction to clear the latches
+ramif:6 = INPUT:5
+###################################################
+#
+# RAM ADDRESS & DATA SECTION
+#
+####################################################
+# The instruction for the selector to take input from memory (0) or address latches (1)
+#
+OR_GATE=add_or
+add_or:0 = driver:5
+add_or:1 = proc:2
+#
+ramif:5 = add_or:0
+#
+# write signal
+#ramif:0 = proc:1
+#
+# Data from RAM
+ramif:8 = INPUT:8
+ramif:9 = INPUT:9
+ramif:10 = INPUT:10
+ramif:11 = INPUT:11
+ramif:12 = INPUT:12
+ramif:13 = INPUT:13
+ramif:14 = INPUT:14
+ramif:15 = INPUT:15
+#
+
+4-1SELECT=ram_data_source0
+4-1SELECT=ram_data_source1
+4-1SELECT=ram_data_source2
+4-1SELECT=ram_data_source3
+4-1SELECT=ram_data_source4
+4-1SELECT=ram_data_source5
+4-1SELECT=ram_data_source6
+4-1SELECT=ram_data_source7
+#
+ram_data_source0:0 = registers:0
+ram_data_source1:0 = registers:1
+ram_data_source2:0 = registers:2
+ram_data_source3:0 = registers:3
+ram_data_source4:0 = registers:4
+ram_data_source5:0 = registers:5
+ram_data_source6:0 = registers:6
+ram_data_source7:0 = registers:7
+#
+ram_data_source0:1 = ramif:8
+ram_data_source1:1 = ramif:9
+ram_data_source2:1 = ramif:10
+ram_data_source3:1 = ramif:11
+ram_data_source4:1 = ramif:12
+ram_data_source5:1 = ramif:13
+ram_data_source6:1 = ramif:14
+ram_data_source7:1 = ramif:15
+#
+ram_data_source0:2 = proc:8
+ram_data_source1:2 = proc:9
+ram_data_source2:2 = proc:10
+ram_data_source3:2 = proc:11
+ram_data_source4:2 = proc:12
+ram_data_source5:2 = proc:13
+ram_data_source6:2 = proc:14
+ram_data_source7:2 = proc:15
+#
+#ramif:8 = ram_data_source0:0
+#ramif:9 = ram_data_source1:0
+#ramif:10 = ram_data_source2:0
+#ramif:11 = ram_data_source3:0
+#ramif:12 = ram_data_source4:0
+#ramif:13 = ram_data_source5:0
+#ramif:14 = ram_data_source6:0
+#ramif:15 = ram_data_source7:0
+#
+ram_data_source0:8 = proc:24
+ram_data_source1:8 = proc:24
+ram_data_source2:8 = proc:24
+ram_data_source3:8 = proc:24
+ram_data_source4:8 = proc:24
+ram_data_source5:8 = proc:24
+ram_data_source6:8 = proc:24
+ram_data_source7:8 = proc:24
+#
+ram_data_source0:9 = proc:25
+ram_data_source1:9 = proc:25
+ram_data_source2:9 = proc:25
+ram_data_source3:9 = proc:25
+ram_data_source4:9 = proc:25
+ram_data_source5:9 = proc:25
+ram_data_source6:9 = proc:25
+ram_data_source7:9 = proc:25
+# Address inputs to the selector from the counter 15 for now
+# These either come from the program counter or the registers
+2-1SELECT=ram_address_sel0
+2-1SELECT=ram_address_sel1
+2-1SELECT=ram_address_sel2
+2-1SELECT=ram_address_sel3
+2-1SELECT=ram_address_sel4
+2-1SELECT=ram_address_sel5
+2-1SELECT=ram_address_sel6
+2-1SELECT=ram_address_sel7
+2-1SELECT=ram_address_sel8
+2-1SELECT=ram_address_sel9
+2-1SELECT=ram_address_sel10
+2-1SELECT=ram_address_sel11
+2-1SELECT=ram_address_sel12
+2-1SELECT=ram_address_sel13
+2-1SELECT=ram_address_sel14
+#
+ram_address_sel0:0 = counter:0
+ram_address_sel1:0 = counter:1
+ram_address_sel2:0 = counter:2
+ram_address_sel3:0 = counter:3
+ram_address_sel4:0 = counter:4
+ram_address_sel5:0 = counter:5
+ram_address_sel6:0 = counter:6
+ram_address_sel7:0 = counter:7
+ram_address_sel8:0 = counter:8
+ram_address_sel9:0 = counter:9
+ram_address_sel10:0 = counter:10
+ram_address_sel11:0 = counter:11
+ram_address_sel12:0 = counter:12
+ram_address_sel13:0 = counter:13
+ram_address_sel14:0 = counter:14
+#
+ram_address_sel0:1 = registers:16
+ram_address_sel1:1 = registers:17
+ram_address_sel2:1 = registers:18
+ram_address_sel3:1 = registers:19
+ram_address_sel4:1 = registers:20
+ram_address_sel5:1 = registers:21
+ram_address_sel6:1 = registers:22
+ram_address_sel7:1 = registers:23
+ram_address_sel8:1 = registers:24
+ram_address_sel9:1 = registers:25
+ram_address_sel10:1 = registers:26
+ram_address_sel11:1 = registers:27
+ram_address_sel12:1 = registers:28
+ram_address_sel13:1 = registers:29
+ram_address_sel14:1 = registers:30
+#
+ram_address_sel0:8 = proc:7
+ram_address_sel1:8 = proc:7
+ram_address_sel2:8 = proc:7
+ram_address_sel3:8 = proc:7
+ram_address_sel4:8 = proc:7
+ram_address_sel5:8 = proc:7
+ram_address_sel6:8 = proc:7
+ram_address_sel7:8 = proc:7
+ram_address_sel8:8 = proc:7
+ram_address_sel9:8 = proc:7
+ram_address_sel10:8 = proc:7
+ram_address_sel11:8 = proc:7
+ram_address_sel12:8 = proc:7
+ram_address_sel13:8 = proc:7
+ram_address_sel14:8 = proc:7
+#
+ramif:16 = ram_address_sel0:0
+ramif:17 = ram_address_sel1:0
+ramif:18 = ram_address_sel2:0
+ramif:19 = ram_address_sel3:0
+ramif:20 = ram_address_sel4:0
+ramif:21 = ram_address_sel5:0
+ramif:22 = ram_address_sel6:0
+ramif:23 = ram_address_sel7:0
+ramif:24 = ram_address_sel8:0
+ramif:25 = ram_address_sel9:0
+ramif:26 = ram_address_sel10:0
+ramif:27 = ram_address_sel11:0
+ramif:28 = ram_address_sel12:0
+ramif:29 = ram_address_sel13:0
+ramif:30 = ram_address_sel14:0
+#
+##############################################################
+# 
+# INPUTS FOR RESET OF PROGRAM COUNTER. 
+# THESE EITHER COME FROM THE RAMIF OR FROM
+# THE HL REGISTER OUTPUT
+#
+##############################################################
+#
+4-1SELECT=program_counter_sel_0
+4-1SELECT=program_counter_sel_1
+4-1SELECT=program_counter_sel_2
+4-1SELECT=program_counter_sel_3
+4-1SELECT=program_counter_sel_4
+4-1SELECT=program_counter_sel_5
+4-1SELECT=program_counter_sel_6
+4-1SELECT=program_counter_sel_7
+4-1SELECT=program_counter_sel_8
+4-1SELECT=program_counter_sel_9
+4-1SELECT=program_counter_sel_a
+4-1SELECT=program_counter_sel_b
+4-1SELECT=program_counter_sel_c
+4-1SELECT=program_counter_sel_d
+4-1SELECT=program_counter_sel_e
+#
+program_counter_sel_0:0 = LOW
+program_counter_sel_1:0 = LOW
+program_counter_sel_2:0 = LOW
+program_counter_sel_3:0 = LOW
+program_counter_sel_4:0 = LOW
+program_counter_sel_5:0 = LOW
+program_counter_sel_6:0 = LOW
+program_counter_sel_7:0 = LOW
+program_counter_sel_8:0 = LOW
+program_counter_sel_9:0 = LOW
+program_counter_sel_a:0 = LOW
+program_counter_sel_b:0 = LOW
+program_counter_sel_c:0 = LOW
+program_counter_sel_d:0 = LOW
+program_counter_sel_e:0 = LOW
+#
+program_counter_sel_0:1 = ramif:8
+program_counter_sel_1:1 = ramif:9
+program_counter_sel_2:1 = ramif:10
+program_counter_sel_3:1 = ramif:11
+program_counter_sel_4:1 = ramif:12
+program_counter_sel_5:1 = ramif:13
+program_counter_sel_6:1 = ramif:14
+program_counter_sel_7:1 = ramif:15
+program_counter_sel_8:1 = ramif:16
+program_counter_sel_9:1 = ramif:17
+program_counter_sel_a:1 = ramif:18
+program_counter_sel_b:1 = ramif:19
+program_counter_sel_c:1 = ramif:20
+program_counter_sel_d:1 = ramif:21
+program_counter_sel_e:1 = ramif:22
+##
+program_counter_sel_0:3 = registers:16
+program_counter_sel_1:3 = registers:17
+program_counter_sel_2:3 = registers:18
+program_counter_sel_3:3 = registers:19
+program_counter_sel_4:3 = registers:20
+program_counter_sel_5:3 = registers:21
+program_counter_sel_6:3 = registers:22
+program_counter_sel_7:3 = registers:23
+program_counter_sel_8:3 = registers:24
+program_counter_sel_9:3 = registers:25
+program_counter_sel_a:3 = registers:26
+program_counter_sel_b:3 = registers:27
+program_counter_sel_c:3 = registers:28
+program_counter_sel_d:3 = registers:29
+program_counter_sel_e:3 = registers:30
+#
+# Careful with this. If proc:26 & proc:27 are both 0 then reset value is held at zero
+# If proc:27 is set we are going to reset. Then proc:26 distinguishes whether selector = 1 or 3
+#
+program_counter_sel_0:8 = proc:27
+program_counter_sel_1:8 = proc:27
+program_counter_sel_2:8 = proc:27
+program_counter_sel_3:8 = proc:27
+program_counter_sel_4:8 = proc:27
+program_counter_sel_5:8 = proc:27
+program_counter_sel_6:8 = proc:27
+program_counter_sel_7:8 = proc:27
+program_counter_sel_8:8 = proc:27
+program_counter_sel_9:8 = proc:27
+program_counter_sel_a:8 = proc:27
+program_counter_sel_b:8 = proc:27
+program_counter_sel_c:8 = proc:27
+program_counter_sel_d:8 = proc:27
+program_counter_sel_e:8 = proc:27
+#
+program_counter_sel_0:9 = proc:26
+program_counter_sel_1:9 = proc:26
+program_counter_sel_2:9 = proc:26
+program_counter_sel_3:9 = proc:26
+program_counter_sel_4:9 = proc:26
+program_counter_sel_5:9 = proc:26
+program_counter_sel_6:9 = proc:26
+program_counter_sel_7:9 = proc:26
+program_counter_sel_8:9 = proc:26
+program_counter_sel_9:9 = proc:26
+program_counter_sel_a:9 = proc:26
+program_counter_sel_b:9 = proc:26
+program_counter_sel_c:9 = proc:26
+program_counter_sel_d:9 = proc:26
+program_counter_sel_e:9 = proc:26
+#
+counter:8 = program_counter_sel_0:0
+counter:9 = program_counter_sel_1:0
+counter:10 = program_counter_sel_2:0
+counter:11 = program_counter_sel_3:0
+counter:12 = program_counter_sel_4:0
+counter:13 = program_counter_sel_5:0
+counter:14 = program_counter_sel_6:0
+counter:15 = program_counter_sel_7:0
+counter:16 = program_counter_sel_8:0
+counter:17 = program_counter_sel_9:0
+counter:18 = program_counter_sel_a:0
+counter:19 = program_counter_sel_b:0
+counter:20 = program_counter_sel_c:0
+counter:21 = program_counter_sel_d:0
+counter:22 = program_counter_sel_e:0
+
+#
+# Trigger a reset
+#
+counter_reset:1 = proc:27
+#############################################################
+#
+# Provide instruction to PROC
+#
+############################################################
+proc:0 = ramif:0
+proc:1 = ramif:1
+proc:2 = ramif:2
+proc:3 = ramif:3
+proc:4 = ramif:4
+proc:5 = ramif:5
+proc:6 = ramif:6
+proc:7 = ramif:7
+#
+# provide driver clock to PROC
+proc:8  = driver:16
+proc:9  = driver:17
+proc:10 = driver:18
+proc:11 = driver:19
+#
+# provide data to PROC
+2-1SELECT=proc_data_sel0
+2-1SELECT=proc_data_sel1
+2-1SELECT=proc_data_sel2
+2-1SELECT=proc_data_sel3
+2-1SELECT=proc_data_sel4
+2-1SELECT=proc_data_sel5
+2-1SELECT=proc_data_sel6
+2-1SELECT=proc_data_sel7
+#
+proc_data_sel0:0 = registers:0
+proc_data_sel1:0 = registers:1
+proc_data_sel2:0 = registers:2
+proc_data_sel3:0 = registers:3
+proc_data_sel4:0 = registers:4
+proc_data_sel5:0 = registers:5
+proc_data_sel6:0 = registers:6
+proc_data_sel7:0 = registers:7
+#
+#proc_data_sel0:1 = ramif:8
+#proc_data_sel1:1 = ramif:9
+#proc_data_sel2:1 = ramif:10 
+#proc_data_sel3:1 = ramif:11 
+#proc_data_sel4:1 = ramif:12 
+#proc_data_sel5:1 = ramif:13 
+#proc_data_sel6:1 = ramif:14 
+#proc_data_sel7:1 = ramif:15 
+proc_data_sel0:1 = ramif:24
+proc_data_sel1:1 = ramif:25
+proc_data_sel2:1 = ramif:26
+proc_data_sel3:1 = ramif:27
+proc_data_sel4:1 = ramif:28
+proc_data_sel5:1 = ramif:29
+proc_data_sel6:1 = ramif:30
+proc_data_sel7:1 = ramif:31
+#
+proc_data_sel0:8 = proc:4
+proc_data_sel1:8 = proc:4
+proc_data_sel2:8 = proc:4
+proc_data_sel3:8 = proc:4
+proc_data_sel4:8 = proc:4
+proc_data_sel5:8 = proc:4
+proc_data_sel6:8 = proc:4
+proc_data_sel7:8 = proc:4
+#
+proc:16 = proc_data_sel0:0
+proc:17 = proc_data_sel1:0
+proc:18 = proc_data_sel2:0
+proc:19 = proc_data_sel3:0
+proc:20 = proc_data_sel4:0
+proc:21 = proc_data_sel5:0
+proc:22 = proc_data_sel6:0
+proc:23 = proc_data_sel7:0
+#
+proc:24 = registers:8
+proc:25 = registers:9
+proc:26 = registers:10
+proc:27 = registers:11
+proc:28 = registers:12
+proc:29 = registers:13
+proc:30 = registers:14
+proc:31 = registers:15
+# Provide data to registers either from ram or from proc
+4-1SELECT=reg_data_sel0
+4-1SELECT=reg_data_sel1
+4-1SELECT=reg_data_sel2
+4-1SELECT=reg_data_sel3
+4-1SELECT=reg_data_sel4
+4-1SELECT=reg_data_sel5
+4-1SELECT=reg_data_sel6
+4-1SELECT=reg_data_sel7
+#
+reg_data_sel0:0 = ramif:24
+reg_data_sel1:0 = ramif:25
+reg_data_sel2:0 = ramif:26
+reg_data_sel3:0 = ramif:27
+reg_data_sel4:0 = ramif:28
+reg_data_sel5:0 = ramif:29
+reg_data_sel6:0 = ramif:30
+reg_data_sel7:0 = ramif:31
+#
+reg_data_sel0:1 = proc:8
+reg_data_sel1:1 = proc:9
+reg_data_sel2:1 = proc:10
+reg_data_sel3:1 = proc:11
+reg_data_sel4:1 = proc:12
+reg_data_sel5:1 = proc:13
+reg_data_sel6:1 = proc:14
+reg_data_sel7:1 = proc:15
+#
+reg_data_sel0:2 = ramif:8
+reg_data_sel1:2 = ramif:9
+reg_data_sel2:2 = ramif:10
+reg_data_sel3:2 = ramif:11
+reg_data_sel4:2 = ramif:12
+reg_data_sel5:2 = ramif:13
+reg_data_sel6:2 = ramif:14
+reg_data_sel7:2 = ramif:15
+#
+reg_data_sel0:8 = proc:5
+reg_data_sel1:8 = proc:5
+reg_data_sel2:8 = proc:5
+reg_data_sel3:8 = proc:5
+reg_data_sel4:8 = proc:5
+reg_data_sel5:8 = proc:5
+reg_data_sel6:8 = proc:5
+reg_data_sel7:8 = proc:5
+#
+reg_data_sel0:9 = proc:6
+reg_data_sel1:9 = proc:6
+reg_data_sel2:9 = proc:6
+reg_data_sel3:9 = proc:6
+reg_data_sel4:9 = proc:6
+reg_data_sel5:9 = proc:6
+reg_data_sel6:9 = proc:6
+reg_data_sel7:9 = proc:6
+#
+registers:8  = reg_data_sel0:0
+registers:9  = reg_data_sel1:0
+registers:10 = reg_data_sel2:0
+registers:11 = reg_data_sel3:0
+registers:12 = reg_data_sel4:0
+registers:13 = reg_data_sel5:0
+registers:14 = reg_data_sel6:0
+registers:15 = reg_data_sel7:0
+#
+# Set register pair outputs to hl, bc, de
+registers:16 = proc:32
+registers:17 = proc:33
+# Provide input to registers from proc
+# write signal
+registers:0 = proc:16
+# data source
+registers:1 = proc:17
+# source and destination
+registers:2 = proc:18
+registers:3 = proc:19
+registers:4 = proc:20
+registers:5 = proc:21
+registers:6 = proc:22
+registers:7 = proc:23
+#
+#OUTPUT:25 = proc:17
+OUTPUT:0 = ram_data_source0:0
+OUTPUT:1 = ram_data_source1:0
+OUTPUT:2 = ram_data_source2:0
+OUTPUT:3 = ram_data_source3:0
+OUTPUT:4 = ram_data_source4:0
+OUTPUT:5 = ram_data_source5:0
+OUTPUT:6 = ram_data_source6:0
+OUTPUT:7 = ram_data_source7:0
+#
+OUTPUT:8 = ramif:32 
+OUTPUT:9 = ramif:33
+OUTPUT:10 = ramif:34
+OUTPUT:11 = ramif:35
+OUTPUT:12 = ramif:36
+OUTPUT:13 = ramif:37
+OUTPUT:14 = ramif:38
+OUTPUT:15 = ramif:39
+OUTPUT:16 = ramif:40
+OUTPUT:17 = ramif:41
+OUTPUT:18 = ramif:42
+OUTPUT:19 = ramif:43
+OUTPUT:20 = ramif:44
+OUTPUT:21 = ramif:45
+OUTPUT:22 = ramif:46
+# Signal to write to ram
+OUTPUT:24 = proc:1
+OUTPUT:28 = driver:16
+OUTPUT:29 = driver:17
+OUTPUT:30 = driver:18
+#
+OUTPUT:31 = proc:31
+#
+OUTPUT:32 = ramif:0
+OUTPUT:33 = ramif:1
+OUTPUT:34 = ramif:2
+OUTPUT:35 = ramif:3
+OUTPUT:36 = ramif:4
+OUTPUT:37 = ramif:5
+OUTPUT:38 = ramif:6
+OUTPUT:39 = ramif:7
+#
+#OUTPUT:40 = counter:0
+#OUTPUT:41 = counter:1
+#OUTPUT:42 = counter:2
+#OUTPUT:43 = counter:3
+#OUTPUT:44 = counter:4
+#OUTPUT:45 = counter:5
+#OUTPUT:46 = counter:6
+#OUTPUT:47 = counter:7
+#
+OUTPUT:40 = proc_data_sel0:0
+OUTPUT:41 = proc_data_sel1:0
+OUTPUT:42 = proc_data_sel2:0
+OUTPUT:43 = proc_data_sel3:0
+OUTPUT:44 = proc_data_sel4:0
+OUTPUT:45 = proc_data_sel5:0
+OUTPUT:46 = proc_data_sel6:0
+OUTPUT:47 = proc_data_sel7:0
+#
+#OUTPUT:40 = ramif:8
+#OUTPUT:41 = ramif:9
+#OUTPUT:42 = ramif:10
+#OUTPUT:43 = ramif:11
+#OUTPUT:44 = ramif:12
+#OUTPUT:45 = ramif:13
+#OUTPUT:46 = ramif:14
+#OUTPUT:47 = ramif:15
+#
+OUTPUT:48 = registers:8
+OUTPUT:49 = registers:9
+OUTPUT:50 = registers:10
+OUTPUT:51 = registers:11
+OUTPUT:52 = registers:12
+OUTPUT:53 = registers:13
+OUTPUT:54 = registers:14
+OUTPUT:55 = registers:15
+#
+OUTPUT:56 = proc:8
+OUTPUT:57 = proc:9
+OUTPUT:58 = proc:10
+OUTPUT:59 = proc:11
+OUTPUT:60 = proc:12
+OUTPUT:61 = proc:13
+OUTPUT:62 = proc:14
+OUTPUT:63 = proc:15
+#OUTPUT:56 = driver:16
+#OUTPUT:57 = driver:17
+#OUTPUT:58 = driver:18
+#OUTPUT:59 = driver:19
+#OUTPUT:56 = registers:16
+#OUTPUT:57 = registers:17
+#OUTPUT:58 = registers:18
+#OUTPUT:59 = registers:19
+#OUTPUT:60 = registers:20
+#OUTPUT:61 = registers:21
+#OUTPUT:62 = registers:22
+#OUTPUT:63 = registers:23
+#
+#OUTPUT:56 = registers:24
+#OUTPUT:57 = registers:25
+#OUTPUT:58 = registers:26
+#OUTPUT:59 = registers:27
+#OUTPUT:60 = registers:28
+#OUTPUT:61 = registers:29
+#OUTPUT:62 = registers:30
+#OUTPUT:63 = registers:31

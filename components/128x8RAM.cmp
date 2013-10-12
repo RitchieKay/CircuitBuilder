@@ -1,0 +1,298 @@
+#
+# This is an 8-bit latch
+# The 8 input is the 'write' input
+# Inputs 0-7 are the data inputs
+# Ourputs 0-7 are the data outputs.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+64x8RAM=64ram0
+64x8RAM=64ram1
+64x8RAM=64ram2
+64x8RAM=64ram3
+64x8RAM=64ram4
+64x8RAM=64ram5
+64x8RAM=64ram6
+64x8RAM=64ram7
+#
+3-8DECODER = decoder
+#
+8-1SELECT = s0
+8-1SELECT = s1
+8-1SELECT = s2
+8-1SELECT = s3
+8-1SELECT = s4
+8-1SELECT = s5
+8-1SELECT = s6
+8-1SELECT = s7
+#
+END_COMPONENTS
+#
+WIRING
+#
+#:
+decoder:0 = INPUT:8
+decoder:8 = INPUT:22
+decoder:9 = INPUT:23
+decoder:10 = INPUT:24
+#
+64ram0:8 = decoder:0
+64ram1:8 = decoder:1
+64ram2:8 = decoder:2
+64ram3:8 = decoder:3
+64ram4:8 = decoder:4
+64ram5:8 = decoder:5
+64ram6:8 = decoder:6
+64ram7:8 = decoder:7
+#
+s0:0 = 64ram0:0
+s0:1 = 64ram1:0
+s0:2 = 64ram2:0
+s0:3 = 64ram3:0
+s0:4 = 64ram4:0
+s0:5 = 64ram5:0
+s0:6 = 64ram6:0
+s0:7 = 64ram7:0
+#
+s1:0 = 64ram0:1
+s1:1 = 64ram1:1
+s1:2 = 64ram2:1
+s1:3 = 64ram3:1
+s1:4 = 64ram4:1
+s1:5 = 64ram5:1
+s1:6 = 64ram6:1
+s1:7 = 64ram7:1
+#
+s2:0 = 64ram0:2
+s2:1 = 64ram1:2
+s2:2 = 64ram2:2
+s2:3 = 64ram3:2
+s2:4 = 64ram4:2
+s2:5 = 64ram5:2
+s2:6 = 64ram6:2
+s2:7 = 64ram7:2
+#
+s3:0 = 64ram0:3
+s3:1 = 64ram1:3
+s3:2 = 64ram2:3
+s3:3 = 64ram3:3
+s3:4 = 64ram4:3
+s3:5 = 64ram5:3
+s3:6 = 64ram6:3
+s3:7 = 64ram7:3
+#
+s4:0 = 64ram0:4
+s4:1 = 64ram1:4
+s4:2 = 64ram2:4
+s4:3 = 64ram3:4
+s4:4 = 64ram4:4
+s4:5 = 64ram5:4
+s4:6 = 64ram6:4
+s4:7 = 64ram7:4
+#
+s5:0 = 64ram0:5
+s5:1 = 64ram1:5
+s5:2 = 64ram2:5
+s5:3 = 64ram3:5
+s5:4 = 64ram4:5
+s5:5 = 64ram5:5
+s5:6 = 64ram6:5
+s5:7 = 64ram7:5
+#
+s6:0 = 64ram0:6
+s6:1 = 64ram1:6
+s6:2 = 64ram2:6
+s6:3 = 64ram3:6
+s6:4 = 64ram4:6
+s6:5 = 64ram5:6
+s6:6 = 64ram6:6
+s6:7 = 64ram7:6
+#
+s7:0 = 64ram0:7
+s7:1 = 64ram1:7
+s7:2 = 64ram2:7
+s7:3 = 64ram3:7
+s7:4 = 64ram4:7
+s7:5 = 64ram5:7
+s7:6 = 64ram6:7
+s7:7 = 64ram7:7
+#
+s0:8 = INPUT:22
+s0:9 = INPUT:23
+s0:10 =INPUT:24
+#
+s1:8 = INPUT:22
+s1:9 = INPUT:23
+s1:10 =INPUT:24
+#
+s2:8 = INPUT:22
+s2:9 = INPUT:23
+s2:10 =INPUT:24
+#
+s3:8 = INPUT:22
+s3:9 = INPUT:23
+s3:10 =INPUT:24
+#
+s4:8 = INPUT:22
+s4:9 = INPUT:23
+s4:10 =INPUT:24
+#
+s5:8 = INPUT:22
+s5:9 = INPUT:23
+s5:10 =INPUT:24
+#
+s6:8 = INPUT:22
+s6:9 = INPUT:23
+s6:10 =INPUT:24
+#
+s7:8 = INPUT:22
+s7:9 = INPUT:23
+s7:10 =INPUT:24
+#
+64ram0:0 = INPUT:0
+64ram1:0 = INPUT:0
+64ram2:0 = INPUT:0
+64ram3:0 = INPUT:0
+64ram4:0 = INPUT:0
+64ram5:0 = INPUT:0
+64ram6:0 = INPUT:0
+64ram7:0 = INPUT:0
+#
+64ram0:1 = INPUT:1
+64ram1:1 = INPUT:1
+64ram2:1 = INPUT:1
+64ram3:1 = INPUT:1
+64ram4:1 = INPUT:1
+64ram5:1 = INPUT:1
+64ram6:1 = INPUT:1
+64ram7:1 = INPUT:1
+#
+64ram0:2 = INPUT:2
+64ram1:2 = INPUT:2
+64ram2:2 = INPUT:2
+64ram3:2 = INPUT:2
+64ram4:2 = INPUT:2
+64ram5:2 = INPUT:2
+64ram6:2 = INPUT:2
+64ram7:2 = INPUT:2
+#
+64ram0:3 = INPUT:3
+64ram1:3 = INPUT:3
+64ram2:3 = INPUT:3
+64ram3:3 = INPUT:3
+64ram4:3 = INPUT:3
+64ram5:3 = INPUT:3
+64ram6:3 = INPUT:3
+64ram7:3 = INPUT:3
+#
+64ram0:4 = INPUT:4
+64ram1:4 = INPUT:4
+64ram2:4 = INPUT:4
+64ram3:4 = INPUT:4
+64ram4:4 = INPUT:4
+64ram5:4 = INPUT:4
+64ram6:4 = INPUT:4
+64ram7:4 = INPUT:4
+#
+64ram0:5 = INPUT:5
+64ram1:5 = INPUT:5
+64ram2:5 = INPUT:5
+64ram3:5 = INPUT:5
+64ram4:5 = INPUT:5
+64ram5:5 = INPUT:5
+64ram6:5 = INPUT:5
+64ram7:5 = INPUT:5
+#
+64ram0:6 = INPUT:6
+64ram1:6 = INPUT:6
+64ram2:6 = INPUT:6
+64ram3:6 = INPUT:6
+64ram4:6 = INPUT:6
+64ram5:6 = INPUT:6
+64ram6:6 = INPUT:6
+64ram7:6 = INPUT:6
+#
+64ram0:7 = INPUT:7
+64ram1:7 = INPUT:7
+64ram2:7 = INPUT:7
+64ram3:7 = INPUT:7
+64ram4:7 = INPUT:7
+64ram5:7 = INPUT:7
+64ram6:7 = INPUT:7
+64ram7:7 = INPUT:7
+#
+64ram0:16 = INPUT:16
+64ram0:17 = INPUT:17
+64ram0:18 = INPUT:18
+64ram0:19 = INPUT:19
+64ram0:20 = INPUT:20
+64ram0:21 = INPUT:21
+#
+64ram1:16 = INPUT:16
+64ram1:17 = INPUT:17
+64ram1:18 = INPUT:18
+64ram1:19 = INPUT:19
+64ram1:20 = INPUT:20
+64ram1:21 = INPUT:21
+#
+64ram2:16 = INPUT:16
+64ram2:17 = INPUT:17
+64ram2:18 = INPUT:18
+64ram2:19 = INPUT:19
+64ram2:20 = INPUT:20
+64ram2:21 = INPUT:21
+#
+64ram3:16 = INPUT:16
+64ram3:17 = INPUT:17
+64ram3:18 = INPUT:18
+64ram3:19 = INPUT:19
+64ram3:20 = INPUT:20
+64ram3:21 = INPUT:21
+#
+64ram4:16 = INPUT:16
+64ram4:17 = INPUT:17
+64ram4:18 = INPUT:18
+64ram4:19 = INPUT:19
+64ram4:20 = INPUT:20
+64ram4:21 = INPUT:21
+#
+64ram5:16 = INPUT:16
+64ram5:17 = INPUT:17
+64ram5:18 = INPUT:18
+64ram5:19 = INPUT:19
+64ram5:20 = INPUT:20
+64ram5:21 = INPUT:21
+#
+64ram6:16 = INPUT:16
+64ram6:17 = INPUT:17
+64ram6:18 = INPUT:18
+64ram6:19 = INPUT:19
+64ram6:20 = INPUT:20
+64ram6:21 = INPUT:21
+#
+64ram7:16 = INPUT:16
+64ram7:17 = INPUT:17
+64ram7:18 = INPUT:18
+64ram7:19 = INPUT:19
+64ram7:20 = INPUT:20
+64ram7:21 = INPUT:21
+#
+OUTPUT:0 = s0:0
+OUTPUT:1 = s1:0
+OUTPUT:2 = s2:0
+OUTPUT:3 = s3:0
+OUTPUT:4 = s4:0
+OUTPUT:5 = s5:0
+OUTPUT:6 = s6:0
+OUTPUT:7 = s7:0
+#
+END_WIRING
+#
+#
+#
+#

@@ -1,0 +1,8 @@
+AND_GATE=and(4)
+
+and:0 = INPUT:0
+and:1 = INPUT:1
+and:2 = INPUT:2
+and:3 = INPUT:32
+
+OUTPUT:0 = and:0

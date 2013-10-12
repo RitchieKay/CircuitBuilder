@@ -1,0 +1,199 @@
+#
+# This is a 16 bit counter with reset ability
+# Bit 0 turns the counter on
+# Bit 1 triggers a reset
+# Inputs 8-23 are the value to reset
+# Outputs 0-15 are the counter
+#
+COMPONENTS
+#
+DE_FLIP_FLOP_PC=flip_flop0
+DE_FLIP_FLOP_PC=flip_flop1
+DE_FLIP_FLOP_PC=flip_flop2
+DE_FLIP_FLOP_PC=flip_flop3
+DE_FLIP_FLOP_PC=flip_flop4
+DE_FLIP_FLOP_PC=flip_flop5
+DE_FLIP_FLOP_PC=flip_flop6
+DE_FLIP_FLOP_PC=flip_flop7
+DE_FLIP_FLOP_PC=flip_flop8
+DE_FLIP_FLOP_PC=flip_flop9
+DE_FLIP_FLOP_PC=flip_flopa
+DE_FLIP_FLOP_PC=flip_flopb
+DE_FLIP_FLOP_PC=flip_flopc
+DE_FLIP_FLOP_PC=flip_flopd
+DE_FLIP_FLOP_PC=flip_flope
+DE_FLIP_FLOP_PC=flip_flopf
+DE_FLIP_FLOP_PC=flip_flopg
+OSCILLATOR=o
+INVERTOR=i
+#
+# PRESET/CLEAR SELECTORS
+P_OR_C=pc0
+P_OR_C=pc1
+P_OR_C=pc2
+P_OR_C=pc3
+P_OR_C=pc4
+P_OR_C=pc5
+P_OR_C=pc6
+P_OR_C=pc7
+P_OR_C=pc8
+P_OR_C=pc9
+P_OR_C=pca
+P_OR_C=pcb
+P_OR_C=pcc
+P_OR_C=pcd
+P_OR_C=pce
+P_OR_C=pcf
+#
+#
+#
+END_COMPONENTS
+#
+WIRING
+#
+o:0 = INPUT:0
+#
+i:0 = o:0
+#
+flip_flop0:0 = o:0
+flip_flop0:8 = flip_flop0:1
+
+flip_flop1:0 = flip_flop0:0
+flip_flop1:8 = flip_flop1:1
+
+flip_flop2:0 = flip_flop1:0
+flip_flop2:8 = flip_flop2:1
+
+flip_flop3:0 = flip_flop2:0
+flip_flop3:8 = flip_flop3:1
+
+flip_flop4:0 = flip_flop3:0
+flip_flop4:8 = flip_flop4:1
+
+flip_flop5:0 = flip_flop4:0
+flip_flop5:8 = flip_flop5:1
+
+flip_flop6:0 = flip_flop5:0
+flip_flop6:8 = flip_flop6:1
+
+flip_flop7:0 = flip_flop6:0
+flip_flop7:8 = flip_flop7:1
+
+flip_flop8:0 = flip_flop7:0
+flip_flop8:8 = flip_flop8:1
+
+flip_flop9:0 = flip_flop8:0
+flip_flop9:8 = flip_flop9:1
+
+flip_flopa:0 = flip_flop9:0
+flip_flopa:8 = flip_flopa:1
+
+flip_flopb:0 = flip_flopa:0
+flip_flopb:8 = flip_flopb:1
+
+flip_flopc:0 = flip_flopb:0
+flip_flopc:8 = flip_flopc:1
+
+flip_flopd:0 = flip_flopc:0
+flip_flopd:8 = flip_flopd:1
+
+flip_flope:0 = flip_flopd:0
+flip_flope:8 = flip_flope:1
+
+flip_flopf:0 = flip_flope:0
+flip_flopf:8 = flip_flopf:1
+
+flip_flopg:0 = flip_flopf:0
+flip_flopg:8 = flip_flopg:1
+# resetting
+pc0:0 = INPUT:1
+pc1:0 = INPUT:1
+pc2:0 = INPUT:1
+pc3:0 = INPUT:1
+pc4:0 = INPUT:1
+pc5:0 = INPUT:1
+pc6:0 = INPUT:1
+pc7:0 = INPUT:1
+pc8:0 = INPUT:1
+pc9:0 = INPUT:1
+pca:0 = INPUT:1
+pcb:0 = INPUT:1
+pcc:0 = INPUT:1
+pcd:0 = INPUT:1
+pce:0 = INPUT:1
+pcf:0 = INPUT:1
+#
+pc0:1 = INPUT:8
+pc1:1 = INPUT:9
+pc2:1 = INPUT:10
+pc3:1 = INPUT:11
+pc4:1 = INPUT:12
+pc5:1 = INPUT:13
+pc6:1 = INPUT:14
+pc7:1 = INPUT:15
+pc8:1 = INPUT:16
+pc9:1 = INPUT:17
+pca:1 = INPUT:18
+pcb:1 = INPUT:19
+pcc:1 = INPUT:20
+pcd:1 = INPUT:21
+pce:1 = INPUT:22
+pcf:1 = INPUT:23
+#
+flip_flop1:1 = pc0:0
+flip_flop2:1 = pc1:0
+flip_flop3:1 = pc2:0
+flip_flop4:1 = pc3:0
+flip_flop5:1 = pc4:0
+flip_flop6:1 = pc5:0
+flip_flop7:1 = pc6:0
+flip_flop8:1 = pc7:0
+flip_flop9:1 = pc8:0
+flip_flopa:1 = pc9:0
+flip_flopb:1 = pca:0
+flip_flopc:1 = pcb:0
+flip_flopd:1 = pcc:0
+flip_flope:1 = pcd:0
+flip_flopf:1 = pce:0
+flip_flopg:1 = pcf:0
+#
+flip_flop1:2 = pc0:1
+flip_flop2:2 = pc1:1
+flip_flop3:2 = pc2:1
+flip_flop4:2 = pc3:1
+flip_flop5:2 = pc4:1
+flip_flop6:2 = pc5:1
+flip_flop7:2 = pc6:1
+flip_flop8:2 = pc7:1
+flip_flop9:2 = pc8:1
+flip_flopa:2 = pc9:1
+flip_flopb:2 = pca:1
+flip_flopc:2 = pcb:1
+flip_flopd:2 = pcc:1
+flip_flope:2 = pcd:1
+flip_flopf:2 = pce:1
+flip_flopg:2 = pcf:1
+#
+OUTPUT:0 = flip_flop1:1
+OUTPUT:1 = flip_flop2:1
+OUTPUT:2 = flip_flop3:1
+OUTPUT:3 = flip_flop4:1
+OUTPUT:4 = flip_flop5:1
+OUTPUT:5 = flip_flop6:1
+OUTPUT:6 = flip_flop7:1
+OUTPUT:7 = flip_flop8:1
+OUTPUT:8 = flip_flop9:1
+OUTPUT:9 = flip_flopa:1
+OUTPUT:10 = flip_flopb:1
+OUTPUT:11 = flip_flopc:1
+OUTPUT:12 = flip_flopd:1
+OUTPUT:13 = flip_flope:1
+OUTPUT:14 = flip_flopf:1
+OUTPUT:15 = flip_flopg:1
+#
+END_WIRING
+#
+#
+#
+#
+#

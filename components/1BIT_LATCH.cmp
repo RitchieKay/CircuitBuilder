@@ -1,0 +1,30 @@
+#
+# This is a 1-bit latch
+# The 1 input is the 'write' input
+# Inputs 0 is the data inputs
+# Ourputs 0 is the data outputs.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+DL_FLIP_FLOP=dlf_0
+#
+END_COMPONENTS
+#
+WIRING
+dlf_0:0 = INPUT:1
+#
+dlf_0:1 = INPUT:0
+#
+#
+OUTPUT:0 = dlf_0:0
+#
+END_WIRING
+#
+#
+#
+#

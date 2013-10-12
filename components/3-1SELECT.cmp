@@ -1,0 +1,46 @@
+#
+#
+# 3 - 1 SELECTOR
+# first 3 inputs are the data inputs
+# inputs 8-9 provide the switch
+# the output is the value of the data input selected by the switch
+#
+#
+#
+AND_GATE=3and_0(3)
+AND_GATE=3and_1(3)
+AND_GATE=3and_2(3)
+OR_GATE=3or(3)
+INVERTOR=inv0
+INVERTOR=inv1
+#
+#
+WIRING
+#
+inv0:0 = INPUT:8
+inv1:0 = INPUT:9
+#
+3and_0:0 = INPUT:0
+3and_1:0 = INPUT:1
+3and_2:0 = INPUT:2
+#
+3and_0:1 = inv0:0
+3and_0:2 = inv1:0
+#
+3and_1:1 = INPUT:8
+3and_1:2 = inv1:0
+#
+3and_2:1 = INPUT:8
+3and_2:2 = INPUT:9
+#
+3or:0 = 3and_0:0
+3or:1 = 3and_1:0
+3or:2 = 3and_2:0
+#
+OUTPUT:0 = 3or:0
+#
+END_WIRING
+#
+#
+#
+#

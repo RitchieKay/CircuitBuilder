@@ -1,0 +1,59 @@
+#
+# This is an edge triggered D-type flip-flopa with preset and clear
+# The 0 input is the 'write' input, the 8 input
+# is the 'data' input. 
+# The 1 input is clear, the 2 input is preset
+# The two outputs are Q and Qbar.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+#
+NOR_GATE=nora(3)
+NOR_GATE=norb(3)
+NOR_GATE=norc(3)
+NOR_GATE=nord(3)
+NOR_GATE=nore(3)
+NOR_GATE=norf(3)
+INVERTOR=inv
+#
+#
+#
+#
+norc:0 = INPUT:1
+nora:0 = INPUT:1
+#
+nord:1 = INPUT:2
+norb:1 = INPUT:2
+norf:1 = INPUT:2
+#
+inv:0  = INPUT:0
+#
+norf:2 = INPUT:8
+#
+nore:1 = inv:0
+nord:2 = inv:0
+#
+nord:0 = norc:0 
+norc:2 = nord:0
+#
+nore:0 = nord:0
+nore:2 = norf:0
+norc:1 = norf:0
+#
+norf:0 = nore:0
+#
+nora:1 = nord:0
+nora:2 = norb:0
+norb:0 = nora:0
+norb:2 = nore:0
+#
+OUTPUT:0 = nora:0
+OUTPUT:1 = norb:0
+
+#
+#
+#
+#

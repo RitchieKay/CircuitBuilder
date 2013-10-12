@@ -1,0 +1,430 @@
+#
+# This provides the registers of the 8080 processor.
+# There are 8 registers in total.
+# A - the accumulator
+# B,C,D,E
+# H,L
+# 
+# Input 0 is the write input
+# Input 1 output_data_sels data source from inputs (0) or from other register (1)
+# Inputs 2-4 output_data_sel the register for read
+# Inputs 5-7 output_data_sel the register to write
+# Inputs 8-15 are data inputs
+#
+# Input 16-17 output_data_sel the register pair to output
+# 00 = HL
+# 01 = BC
+# 10 = DE
+# 11 = HL
+#
+# Outputs 0-7 are the data outputs
+# Outputs 8-23 are 16 bits "address" outputs of either register pair BC, DE, HL
+#
+#
+#
+8BIT_LATCH=ACC
+8BIT_LATCH=REGB
+8BIT_LATCH=REGC
+8BIT_LATCH=REGD
+8BIT_LATCH=REGE
+8BIT_LATCH=REGH
+8BIT_LATCH=REGL
+#
+3-8DECODER=decoder
+#
+8x2-1SELECT=input_sel
+#
+8-1SELECT=output_data_sel0
+8-1SELECT=output_data_sel1
+8-1SELECT=output_data_sel2
+8-1SELECT=output_data_sel3
+8-1SELECT=output_data_sel4
+8-1SELECT=output_data_sel5
+8-1SELECT=output_data_sel6
+8-1SELECT=output_data_sel7
+#
+4-1SELECT=output_add1_sel0
+4-1SELECT=output_add1_sel1
+4-1SELECT=output_add1_sel2
+4-1SELECT=output_add1_sel3
+4-1SELECT=output_add1_sel4
+4-1SELECT=output_add1_sel5
+4-1SELECT=output_add1_sel6
+4-1SELECT=output_add1_sel7
+#
+4-1SELECT=output_add2_sel0
+4-1SELECT=output_add2_sel1
+4-1SELECT=output_add2_sel2
+4-1SELECT=output_add2_sel3
+4-1SELECT=output_add2_sel4
+4-1SELECT=output_add2_sel5
+4-1SELECT=output_add2_sel6
+4-1SELECT=output_add2_sel7
+#
+#
+SECTION=WRITE
+  #
+  # The decoder provides the write input to the latches 
+  #
+  decoder:0  = INPUT:0
+  decoder:8  = INPUT:5
+  decoder:9  = INPUT:6
+  decoder:10 = INPUT:7
+  #
+  ACC:0  = decoder:7
+  REGB:0 = decoder:0
+  REGC:0 = decoder:1
+  REGD:0 = decoder:2
+  REGE:0 = decoder:3
+  REGH:0 = decoder:4
+  REGL:0 = decoder:5
+  #
+END_SECTION
+#
+SECTION=INPUT_SELECT
+#
+# Inputs to 8x2-1 output_data_sel are either outputs from above output_data_selors or direct from input
+#
+  input_sel:0 = INPUT:8
+  input_sel:1 = INPUT:9
+  input_sel:2 = INPUT:10
+  input_sel:3 = INPUT:11
+  input_sel:4 = INPUT:12
+  input_sel:5 = INPUT:13
+  input_sel:6 = INPUT:14
+  input_sel:7 = INPUT:15
+  #
+  input_sel:8  = output_data_sel0:0
+  input_sel:9  = output_data_sel1:0
+  input_sel:10 = output_data_sel2:0
+  input_sel:11 = output_data_sel3:0
+  input_sel:12 = output_data_sel4:0
+  input_sel:13 = output_data_sel5:0
+  input_sel:14 = output_data_sel6:0
+  input_sel:15 = output_data_sel7:0
+  #
+  input_sel:16 = INPUT:1
+  #
+  # Data inputs to registers are outputs from input_sel 
+  #
+  REGB:8 = input_sel:0
+  REGB:9 = input_sel:1
+  REGB:10 = input_sel:2
+  REGB:11 = input_sel:3
+  REGB:12 = input_sel:4
+  REGB:13 = input_sel:5
+  REGB:14 = input_sel:6
+  REGB:15 = input_sel:7
+  #
+  REGC:8 = input_sel:0
+  REGC:9 = input_sel:1
+  REGC:10 = input_sel:2
+  REGC:11 = input_sel:3
+  REGC:12 = input_sel:4
+  REGC:13 = input_sel:5
+  REGC:14 = input_sel:6
+  REGC:15 = input_sel:7
+  #
+  REGD:8 = input_sel:0
+  REGD:9 = input_sel:1
+  REGD:10 = input_sel:2
+  REGD:11 = input_sel:3
+  REGD:12 = input_sel:4
+  REGD:13 = input_sel:5
+  REGD:14 = input_sel:6
+  REGD:15 = input_sel:7
+  #
+  REGE:8 = input_sel:0
+  REGE:9 = input_sel:1
+  REGE:10 = input_sel:2
+  REGE:11 = input_sel:3
+  REGE:12 = input_sel:4
+  REGE:13 = input_sel:5
+  REGE:14 = input_sel:6
+  REGE:15 = input_sel:7
+  #
+  REGH:8 = input_sel:0
+  REGH:9 = input_sel:1
+  REGH:10 = input_sel:2
+  REGH:11 = input_sel:3
+  REGH:12 = input_sel:4
+  REGH:13 = input_sel:5
+  REGH:14 = input_sel:6
+  REGH:15 = input_sel:7
+  #
+  REGL:8 = input_sel:0
+  REGL:9 = input_sel:1
+  REGL:10 = input_sel:2
+  REGL:11 = input_sel:3
+  REGL:12 = input_sel:4
+  REGL:13 = input_sel:5
+  REGL:14 = input_sel:6
+  REGL:15 = input_sel:7
+  #
+  #
+  ACC:8 = input_sel:0
+  ACC:9 = input_sel:1
+  ACC:10 = input_sel:2
+  ACC:11 = input_sel:3
+  ACC:12 = input_sel:4
+  ACC:13 = input_sel:5
+  ACC:14 = input_sel:6
+  ACC:15 = input_sel:7
+  #
+END_SECTION
+# Data outputs of registers are inputted to 8-1 output_data_selector
+SECTION=DATA_OUTPUT
+#
+  output_data_sel0:8  = INPUT:2
+  output_data_sel0:9  = INPUT:3
+  output_data_sel0:10 = INPUT:4
+  #
+  output_data_sel1:8  = INPUT:2
+  output_data_sel1:9  = INPUT:3
+  output_data_sel1:10 = INPUT:4
+  #
+  output_data_sel2:8  = INPUT:2
+  output_data_sel2:9  = INPUT:3
+  output_data_sel2:10 = INPUT:4
+  #
+  output_data_sel3:8  = INPUT:2
+  output_data_sel3:9  = INPUT:3
+  output_data_sel3:10 = INPUT:4
+  #
+  output_data_sel4:8  = INPUT:2
+  output_data_sel4:9  = INPUT:3
+  output_data_sel4:10 = INPUT:4
+  #
+  output_data_sel5:8  = INPUT:2
+  output_data_sel5:9  = INPUT:3
+  output_data_sel5:10 = INPUT:4
+  #
+  output_data_sel6:8  = INPUT:2
+  output_data_sel6:9  = INPUT:3
+  output_data_sel6:10 = INPUT:4
+  #
+  output_data_sel7:8  = INPUT:2
+  output_data_sel7:9  = INPUT:3
+  output_data_sel7:10 = INPUT:4
+  #
+  output_data_sel0:0 = REGB:0
+  output_data_sel0:1 = REGC:0
+  output_data_sel0:2 = REGD:0
+  output_data_sel0:3 = REGE:0
+  output_data_sel0:4 = REGH:0
+  output_data_sel0:5 = REGL:0
+  output_data_sel0:7 = ACC:0
+  #
+  output_data_sel1:0 = REGB:1
+  output_data_sel1:1 = REGC:1
+  output_data_sel1:2 = REGD:1
+  output_data_sel1:3 = REGE:1
+  output_data_sel1:4 = REGH:1
+  output_data_sel1:5 = REGL:1
+  output_data_sel1:7 = ACC:1
+  #
+  output_data_sel2:0 = REGB:2
+  output_data_sel2:1 = REGC:2
+  output_data_sel2:2 = REGD:2
+  output_data_sel2:3 = REGE:2
+  output_data_sel2:4 = REGH:2
+  output_data_sel2:5 = REGL:2
+  output_data_sel2:7 = ACC:2
+  #
+  output_data_sel3:0 = REGB:3
+  output_data_sel3:1 = REGC:3
+  output_data_sel3:2 = REGD:3
+  output_data_sel3:3 = REGE:3
+  output_data_sel3:4 = REGH:3
+  output_data_sel3:5 = REGL:3
+  output_data_sel3:7 = ACC:3
+  #
+  output_data_sel4:0 = REGB:4
+  output_data_sel4:1 = REGC:4
+  output_data_sel4:2 = REGD:4
+  output_data_sel4:3 = REGE:4
+  output_data_sel4:4 = REGH:4
+  output_data_sel4:5 = REGL:4
+  output_data_sel4:7 = ACC:4
+  #
+  output_data_sel5:0 = REGB:5
+  output_data_sel5:1 = REGC:5
+  output_data_sel5:2 = REGD:5
+  output_data_sel5:3 = REGE:5
+  output_data_sel5:4 = REGH:5
+  output_data_sel5:5 = REGL:5
+  output_data_sel5:7 = ACC:5
+  #
+  output_data_sel6:0 = REGB:6
+  output_data_sel6:1 = REGC:6
+  output_data_sel6:2 = REGD:6
+  output_data_sel6:3 = REGE:6
+  output_data_sel6:4 = REGH:6
+  output_data_sel6:5 = REGL:6
+  output_data_sel6:7 = ACC:6
+  #
+  output_data_sel7:0 = REGB:7
+  output_data_sel7:1 = REGC:7
+  output_data_sel7:2 = REGD:7
+  output_data_sel7:3 = REGE:7
+  output_data_sel7:4 = REGH:7
+  output_data_sel7:5 = REGL:7
+  output_data_sel7:7 = ACC:7
+#
+SECTION=ADDRESS_OUTPUTS
+
+  # First address 
+  output_add1_sel0:8 = INPUT:16
+  output_add1_sel0:9 = INPUT:17
+  output_add1_sel1:8 = INPUT:16
+  output_add1_sel1:9 = INPUT:17
+  output_add1_sel2:8 = INPUT:16
+  output_add1_sel2:9 = INPUT:17
+  output_add1_sel3:8 = INPUT:16
+  output_add1_sel3:9 = INPUT:17
+  output_add1_sel4:8 = INPUT:16
+  output_add1_sel4:9 = INPUT:17
+  output_add1_sel5:8 = INPUT:16
+  output_add1_sel5:9 = INPUT:17
+  output_add1_sel6:8 = INPUT:16
+  output_add1_sel6:9 = INPUT:17
+  output_add1_sel7:8 = INPUT:16
+  output_add1_sel7:9 = INPUT:17
+  # 
+  output_add1_sel0:0 = REGH:0
+  output_add1_sel1:0 = REGH:1
+  output_add1_sel2:0 = REGH:2
+  output_add1_sel3:0 = REGH:3
+  output_add1_sel4:0 = REGH:4
+  output_add1_sel5:0 = REGH:5
+  output_add1_sel6:0 = REGH:6
+  output_add1_sel7:0 = REGH:7
+  #
+  output_add1_sel0:1 = REGB:0
+  output_add1_sel1:1 = REGB:1
+  output_add1_sel2:1 = REGB:2
+  output_add1_sel3:1 = REGB:3
+  output_add1_sel4:1 = REGB:4
+  output_add1_sel5:1 = REGB:5
+  output_add1_sel6:1 = REGB:6
+  output_add1_sel7:1 = REGB:7
+  #
+  output_add1_sel0:2 = REGD:0
+  output_add1_sel1:2 = REGD:1
+  output_add1_sel2:2 = REGD:2
+  output_add1_sel3:2 = REGD:3
+  output_add1_sel4:2 = REGD:4
+  output_add1_sel5:2 = REGD:5
+  output_add1_sel6:2 = REGD:6
+  output_add1_sel7:2 = REGD:7
+  #
+  output_add1_sel0:3 = REGH:0
+  output_add1_sel1:3 = REGH:1
+  output_add1_sel2:3 = REGH:2
+  output_add1_sel3:3 = REGH:3
+  output_add1_sel4:3 = REGH:4
+  output_add1_sel5:3 = REGH:5
+  output_add1_sel6:3 = REGH:6
+  output_add1_sel7:3 = REGH:7
+  #
+  # Second address
+  output_add2_sel0:8 = INPUT:16
+  output_add2_sel0:9 = INPUT:17
+  output_add2_sel1:8 = INPUT:16
+  output_add2_sel1:9 = INPUT:17
+  output_add2_sel2:8 = INPUT:16
+  output_add2_sel2:9 = INPUT:17
+  output_add2_sel3:8 = INPUT:16
+  output_add2_sel3:9 = INPUT:17
+  output_add2_sel4:8 = INPUT:16
+  output_add2_sel4:9 = INPUT:17
+  output_add2_sel5:8 = INPUT:16
+  output_add2_sel5:9 = INPUT:17
+  output_add2_sel6:8 = INPUT:16
+  output_add2_sel6:9 = INPUT:17
+  output_add2_sel7:8 = INPUT:16
+  output_add2_sel7:9 = INPUT:17
+  #
+  output_add2_sel0:0 = REGL:0
+  output_add2_sel1:0 = REGL:1
+  output_add2_sel2:0 = REGL:2
+  output_add2_sel3:0 = REGL:3
+  output_add2_sel4:0 = REGL:4
+  output_add2_sel5:0 = REGL:5
+  output_add2_sel6:0 = REGL:6
+  output_add2_sel7:0 = REGL:7
+  #
+  output_add2_sel0:1 = REGC:0
+  output_add2_sel1:1 = REGC:1
+  output_add2_sel2:1 = REGC:2
+  output_add2_sel3:1 = REGC:3
+  output_add2_sel4:1 = REGC:4
+  output_add2_sel5:1 = REGC:5
+  output_add2_sel6:1 = REGC:6
+  output_add2_sel7:1 = REGC:7
+  #
+  output_add2_sel0:2 = REGE:0
+  output_add2_sel1:2 = REGE:1
+  output_add2_sel2:2 = REGE:2
+  output_add2_sel3:2 = REGE:3
+  output_add2_sel4:2 = REGE:4
+  output_add2_sel5:2 = REGE:5
+  output_add2_sel6:2 = REGE:6
+  output_add2_sel7:2 = REGE:7
+  #
+  output_add2_sel0:3 = REGL:0
+  output_add2_sel1:3 = REGL:1
+  output_add2_sel2:3 = REGL:2
+  output_add2_sel3:3 = REGL:3
+  output_add2_sel4:3 = REGL:4
+  output_add2_sel5:3 = REGL:5
+  output_add2_sel6:3 = REGL:6
+  output_add2_sel7:3 = REGL:7
+
+  # 
+END_SECTION
+#
+# Outputs 0-7 are from the output_data_seled register
+#
+OUTPUT:0 = output_data_sel0:0
+OUTPUT:1 = output_data_sel1:0
+OUTPUT:2 = output_data_sel2:0
+OUTPUT:3 = output_data_sel3:0
+OUTPUT:4 = output_data_sel4:0
+OUTPUT:5 = output_data_sel5:0
+OUTPUT:6 = output_data_sel6:0
+OUTPUT:7 = output_data_sel7:0
+#
+# Outputs 8-15 are form the accumulator
+#
+OUTPUT:8 = ACC:0
+OUTPUT:9 = ACC:1
+OUTPUT:10 = ACC:2
+OUTPUT:11 = ACC:3
+OUTPUT:12 = ACC:4
+OUTPUT:13 = ACC:5
+OUTPUT:14 = ACC:6
+OUTPUT:15 = ACC:7
+#
+# Outputs 16-23 are from first selected register pair
+#
+OUTPUT:16 = output_add2_sel0:0
+OUTPUT:17 = output_add2_sel1:0
+OUTPUT:18 = output_add2_sel2:0
+OUTPUT:19 = output_add2_sel3:0
+OUTPUT:20 = output_add2_sel4:0
+OUTPUT:21 = output_add2_sel5:0
+OUTPUT:22 = output_add2_sel6:0
+OUTPUT:23 = output_add2_sel7:0
+#
+# Outputs 24-31 are from first selected register pair
+#
+OUTPUT:24 = output_add1_sel0:0
+OUTPUT:25 = output_add1_sel1:0
+OUTPUT:26 = output_add1_sel2:0
+OUTPUT:27 = output_add1_sel3:0
+OUTPUT:28 = output_add1_sel4:0
+OUTPUT:29 = output_add1_sel5:0
+OUTPUT:30 = output_add1_sel6:0
+OUTPUT:31 = output_add1_sel7:0
+#

@@ -1,0 +1,60 @@
+#
+#
+# 8 - 1 SELECTOR
+# first 8 inputs are the data inputs
+# last 3 inputs provide the switch
+# the output is the value of the data input selected by the switch
+#
+#
+#
+2-1SELECT=sel0
+2-1SELECT=sel1
+2-1SELECT=sel2
+2-1SELECT=sel3
+2-1SELECT=sel4
+2-1SELECT=sel5
+2-1SELECT=sel6
+2-1SELECT=sel7
+#
+#
+sel0:0 = INPUT:0
+sel1:0 = INPUT:1
+sel2:0 = INPUT:2
+sel3:0 = INPUT:3
+sel4:0 = INPUT:4
+sel5:0 = INPUT:5
+sel6:0 = INPUT:6
+sel7:0 = INPUT:7
+#
+sel0:1 = INPUT:8
+sel1:1 = INPUT:9
+sel2:1 = INPUT:10
+sel3:1 = INPUT:11
+sel4:1 = INPUT:12
+sel5:1 = INPUT:13
+sel6:1 = INPUT:14
+sel7:1 = INPUT:15
+#
+sel0:8 = INPUT:16
+sel1:8 = INPUT:16
+sel2:8 = INPUT:16
+sel3:8 = INPUT:16
+sel4:8 = INPUT:16
+sel5:8 = INPUT:16
+sel6:8 = INPUT:16
+sel7:8 = INPUT:16
+#
+#
+OUTPUT:0 = sel0:0
+OUTPUT:1 = sel1:0
+OUTPUT:2 = sel2:0
+OUTPUT:3 = sel3:0
+OUTPUT:4 = sel4:0
+OUTPUT:5 = sel5:0
+OUTPUT:6 = sel6:0
+OUTPUT:7 = sel7:0
+#
+#
+#
+#
+#

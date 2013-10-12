@@ -1,0 +1,55 @@
+#
+# This is a 3 bit counter with reset ability
+# Bit 0 is the clock signal
+# Bit 1 triggers a reset
+# Inputs 8-23 are the value to reset
+# Outputs 0-15 are the counter
+#
+#
+DE_FLIP_FLOP_PC=flip_flop0
+DE_FLIP_FLOP_PC=flip_flop1
+DE_FLIP_FLOP_PC=flip_flop2
+#
+# PRESET/CLEAR SELECTORS
+P_OR_C=pc0
+P_OR_C=pc1
+P_OR_C=pc2
+#
+#
+#
+flip_flop0:0 = INPUT:0
+flip_flop0:8 = flip_flop0:1
+
+flip_flop1:0 = flip_flop0:0
+flip_flop1:8 = flip_flop1:1
+
+flip_flop2:0 = flip_flop1:0
+flip_flop2:8 = flip_flop2:1
+
+
+# resetting
+pc0:0 = INPUT:1
+pc1:0 = INPUT:1
+pc2:0 = INPUT:1
+#
+pc0:1 = INPUT:8
+pc1:1 = INPUT:9
+pc2:1 = INPUT:10
+#
+flip_flop0:1 = pc0:0
+flip_flop1:1 = pc1:0
+flip_flop2:1 = pc2:0
+#
+flip_flop0:2 = pc0:1
+flip_flop1:2 = pc1:1
+flip_flop2:2 = pc2:1
+#
+OUTPUT:0 = flip_flop0:1
+OUTPUT:1 = flip_flop1:1
+OUTPUT:2 = flip_flop2:1
+#
+#
+#
+#
+#
+#

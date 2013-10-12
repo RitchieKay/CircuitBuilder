@@ -1,0 +1,22 @@
+#
+#
+# 3 way and
+#
+#
+#
+LATENCY = 5000000
+COMPONENTS
+#
+NOR_GATE=nor
+#
+END_COMPONENTS
+#
+WIRING
+nor:0 = INPUT:0
+nor:1 = INPUT:1
+OUTPUT:0 = nor:0
+END_WIRING
+#
+#
+#
+#

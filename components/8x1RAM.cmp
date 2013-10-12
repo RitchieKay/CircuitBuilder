@@ -1,0 +1,96 @@
+#
+# This is a 8x1-RAM array
+# The 0 input is the data input
+# Input 8 is the write input
+# Inputs 16-18 are the address
+# Ourputs 0 is the data output.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+1BIT_LATCH=l0
+1BIT_LATCH=l1
+1BIT_LATCH=l2
+1BIT_LATCH=l3
+1BIT_LATCH=l4
+1BIT_LATCH=l5
+1BIT_LATCH=l6
+1BIT_LATCH=l7
+#
+3-8DECODER=d0
+#
+8-1SELECT=s0
+#
+END_COMPONENTS
+#
+WIRING
+#
+l0:0 = INPUT:0
+l1:0 = INPUT:0
+l2:0 = INPUT:0
+l3:0 = INPUT:0
+l4:0 = INPUT:0
+l5:0 = INPUT:0
+l6:0 = INPUT:0
+l7:0 = INPUT:0
+#
+d0:0 = INPUT:8
+#
+d0:8 = INPUT:16
+d0:9 = INPUT:17
+d0:10 = INPUT:18
+#
+l0:1 = d0:0
+l1:1 = d0:1
+l2:1 = d0:2
+l3:1 = d0:3
+l4:1 = d0:4
+l5:1 = d0:5
+l6:1 = d0:6
+l7:1 = d0:7
+#
+s0:0 = l0:0
+s0:1 = l1:0
+s0:2 = l2:0
+s0:3 = l3:0
+s0:4 = l4:0
+s0:5 = l5:0
+s0:6 = l6:0
+s0:7 = l7:0
+#
+s0:8 = INPUT:16
+s0:9 = INPUT:17
+s0:10 = INPUT:18
+#
+#OUTPUT:0 = s0:0
+#
+OUTPUT:0 = d0:0
+OUTPUT:1 = d0:1
+OUTPUT:2 = d0:2
+OUTPUT:3 = d0:3
+OUTPUT:4 = d0:4
+OUTPUT:5 = d0:5
+OUTPUT:6 = d0:6
+OUTPUT:7 = d0:7
+#
+OUTPUT:8 = l0:0
+OUTPUT:9 = l1:0
+OUTPUT:10 = l2:0
+OUTPUT:11 = l3:0
+OUTPUT:12 = l4:0
+OUTPUT:13 = l5:0
+OUTPUT:14 = l6:0
+OUTPUT:15 = l7:0
+#
+OUTPUT:16 = s0:0
+
+#
+END_WIRING
+#
+#
+#
+#

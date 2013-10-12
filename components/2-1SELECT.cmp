@@ -1,0 +1,29 @@
+#
+#
+# 2 - 1 SELECTOR
+# first 2 inputs are the data inputs
+# the 8 input provides the switch
+# the output is the value of the data input selected by the switch
+#
+#
+#
+AND_GATE=and_0
+AND_GATE=and_1
+OR_GATE=or
+#INVERTOR=inv
+#
+#
+and_0:0 = INPUT:0
+and_0:1 = INVERT:8
+and_1:0 = INPUT:1
+and_1:1 = INPUT:8
+#
+or:0 = and_0:0
+or:1 = and_1:0
+#
+OUTPUT:0 = or:0
+#
+#
+#
+#
+#TE

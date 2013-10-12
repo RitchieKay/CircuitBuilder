@@ -1,0 +1,21 @@
+#
+#
+#
+#
+# Two Nor gates
+#
+#
+NOR_GATE=nor_gate_1
+NOR_GATE=nor_gate_2
+#
+#
+nor_gate_1:0 = INPUT:0
+nor_gate_1:1 = nor_gate_2:0
+nor_gate_2:0 = INPUT:1
+nor_gate_2:1 = nor_gate_1:0
+OUTPUT:0     = nor_gate_1:0
+OUTPUT:1     = nor_gate_2:0
+#
+#
+#
+#

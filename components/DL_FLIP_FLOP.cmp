@@ -1,0 +1,42 @@
+#
+# This is a level triggered D-type flip-flop
+# The 0 input is the 'write' input, the 8 input
+# is the 'data' input. The two outputs are Q and Qbar.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+FLIP_FLOP=flip_flop
+#
+AND_GATE=and_gate_upper
+AND_GATE=and_gate_lower
+#
+INVERTOR=invertor
+#
+END_COMPONENTS
+#
+WIRING
+and_gate_upper:1 = INPUT:0
+and_gate_lower:0 = INPUT:0
+#
+invertor:0 = INPUT:8
+#
+and_gate_lower:1 = INPUT:8
+and_gate_upper:0 = invertor:0
+#
+flip_flop:0 = and_gate_upper:0
+flip_flop:1 = and_gate_lower:0
+#
+#
+OUTPUT:0 = flip_flop:0
+OUTPUT:1 = flip_flop:1
+
+END_WIRING
+#
+#
+#
+#

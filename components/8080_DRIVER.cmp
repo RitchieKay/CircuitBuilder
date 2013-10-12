@@ -1,0 +1,196 @@
+#
+# This is a driver for the 8080 chip
+# Bit 0 turns the counter on
+# Bit 1 triggers a reset. Resets to f if bit 3 is 0. 0 otherwise
+# Outputs 0-15 are the counter
+#
+#
+4COUNTER=4count
+NAND_GATE=nand1
+AND_GATE=and1
+INVERTOR=inv0
+INVERTOR=inv1
+INVERTOR=inv2
+INVERTOR=inv3
+#INVERTOR=inv4
+INVERTOR=inv5
+AND_GATE=4and0(4)
+AND_GATE=4and1(4)
+AND_GATE=4and2(4)
+AND_GATE=4and3(4)
+AND_GATE=4and4(4)
+AND_GATE=4and5(4)
+AND_GATE=4and6(4)
+AND_GATE=4and7(4)
+AND_GATE=4and8(4)
+AND_GATE=4and9(4)
+AND_GATE=4anda(4)
+OR_GATE=or0(3)
+OR_GATE=or1
+OR_GATE=or2
+AND_GATE=and0
+OR_GATE=or3
+#
+# PRESET/CLEAR SELECTORS
+#
+#
+#
+#
+#inv4:0 = INPUT:1
+inv5:0 = INPUT:8
+#
+or3:0 = INPUT:2
+or3:1 = INVERT:1
+#
+#
+4count:8 = HIGH
+4count:9 = HIGH
+4count:10 = HIGH
+4count:11 = HIGH
+#
+4count:1 = or3:0
+
+and0:0 = INPUT:0
+and0:1 = INPUT:1
+
+4count:0 = and0:0
+#
+# Increment program count on 2, 5, 15
+#
+INVERTOR=inv_count0
+INVERTOR=inv_count1
+INVERTOR=inv_count2
+INVERTOR=inv_count3
+#
+inv_count0:0 = 4count:0
+inv_count1:0 = 4count:1
+inv_count2:0 = 4count:2
+inv_count3:0 = 4count:3
+#
+AND_GATE=pc2(4)
+pc2:0 = inv_count0:0
+pc2:1 = 4count:1
+pc2:2 = inv_count2:0
+pc2:3 = inv_count3:0
+#
+AND_GATE=pc5(4)
+pc5:0 = 4count:0
+pc5:1 = inv_count1:0
+pc5:2 = 4count:2
+pc5:3 = inv_count3:0
+#
+AND_GATE=pc15(4)
+pc15:0 = 4count:0
+pc15:1 = 4count:1
+pc15:2 = 4count:2
+pc15:3 = 4count:3
+#
+#nand1:0 = 4count:1
+#nand1:1 = 4count:2
+#
+#and1:0 = nand1:0
+#and1:1 = 4count:0
+OR_GATE=pc_or(3)
+pc_or:0 = pc2:0
+pc_or:1 = pc5:0
+pc_or:2 = pc15:0
+
+#This is output to the program counter
+OUTPUT:0 = pc_or:0
+#
+# This is to the code latch
+inv0:0 = 4count:0
+inv1:0 = 4count:1
+inv2:0 = 4count:2
+inv3:0 = 4count:3
+#
+4and0:0 = inv0:0
+4and0:1 = inv1:0
+4and0:2 = inv2:0
+4and0:3 = inv3:0
+#
+4and1:0 = 4count:0
+4and1:1 = inv1:0
+4and1:2 = inv2:0
+4and1:3 = inv3:0
+#
+4and2:0 = inv0:0
+4and2:1 = 4count:1
+4and2:2 = inv2:0
+4and2:3 = inv3:0
+#
+4and3:0 = 4count:0
+4and3:1 = 4count:1
+4and3:2 = inv2:0
+4and3:3 = inv3:0
+#
+4and4:0 = inv0:0
+4and4:1 = inv1:0
+4and4:2 = 4count:2
+4and4:3 = inv3:0
+#
+4and5:0 = 4count:0
+4and5:1 = inv1:0
+4and5:2 = 4count:2
+4and5:3 = inv3:0
+#
+4and6:0 = inv0:0
+4and6:1 = 4count:1
+4and6:2 = 4count:2
+4and6:3 = inv3:0
+#
+4and7:0 = 4count:0
+4and7:1 = 4count:1
+4and7:2 = 4count:2
+4and7:3 = inv3:0
+#
+4and8:0 = inv0:0
+4and8:1 = inv1:0
+4and8:2 = inv2:0
+4and8:3 = 4count:3
+#
+4and9:0 = 4count:0
+4and9:1 = inv1:0
+4and9:2 = inv2:0
+4and9:3 = 4count:3
+#
+OUTPUT:1 = 4and0:0
+#
+# This is output to the first address latch
+#
+#
+# This is output to the first address latch
+#
+OUTPUT:2 = 4and3:0
+#
+# This is output to the second address latch
+#
+OUTPUT:3 = 4and6:0
+#
+# This is the output to the data latch
+#
+OUTPUT:4 = 4and9:0
+#
+# This is the output to select who address the ram
+or0:0 = 4and7:0
+or0:1 = 4and8:0
+or0:2 = 4and9:0
+OUTPUT:5 = or0:0
+#
+# This output is high when the data is available
+or1:0 = 4and9:0
+or1:1 = 4anda:0
+OUTPUT:6 = or1:0
+#
+# This output is high the first time data is available
+OUTPUT:7 = 4and9:0
+# This output is high the second time data is available
+OUTPUT:8 = 4anda:0
+#
+#
+OUTPUT:16 = 4count:0
+OUTPUT:17 = 4count:1
+OUTPUT:18 = 4count:2
+OUTPUT:19 = 4count:3
+#
+#

@@ -1,0 +1,24 @@
+#
+# Selects preset or clear
+# zeroth input turns selection on.
+# When set 0th output is inverse of input
+# 1st output is same as input
+#
+#
+AND_GATE=and0
+AND_GATE=and1
+INVERTOR=inv
+BUFFER=buf
+#
+inv:0 = INPUT:1
+buf:0 = INPUT:1
+and0:0 = INPUT:0
+and1:0 = INPUT:0
+and0:1 = inv:0
+and1:1 = buf:0
+OUTPUT:0 = and1:0
+OUTPUT:1 = and0:0
+#
+#
+#
+#

@@ -1,0 +1,70 @@
+#
+# This is an 8-bit latch
+# The 0 input is the 'write' input
+# Inputs 8-15 are the data inputs
+# Ourputs 0-7 are the data outputs.
+# Outputs 8-15 are the Qbar outputs
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+#
+DE_FLIP_FLOP_PC=dlf_1
+DE_FLIP_FLOP_PC=dlf_2
+DE_FLIP_FLOP_PC=dlf_3
+DE_FLIP_FLOP_PC=dlf_4
+DE_FLIP_FLOP_PC=dlf_5
+DE_FLIP_FLOP_PC=dlf_6
+DE_FLIP_FLOP_PC=dlf_7
+DE_FLIP_FLOP_PC=dlf_8
+#
+dlf_1:0 = INPUT:0
+dlf_2:0 = INPUT:0
+dlf_3:0 = INPUT:0
+dlf_4:0 = INPUT:0
+dlf_5:0 = INPUT:0
+dlf_6:0 = INPUT:0
+dlf_7:0 = INPUT:0
+dlf_8:0 = INPUT:0
+#
+dlf_1:1 = INPUT:1
+dlf_2:1 = INPUT:1
+dlf_3:1 = INPUT:1
+dlf_4:1 = INPUT:1
+dlf_5:1 = INPUT:1
+dlf_6:1 = INPUT:1
+dlf_7:1 = INPUT:1
+dlf_8:1 = INPUT:1
+#
+dlf_1:8 = INPUT:8
+dlf_2:8 = INPUT:9
+dlf_3:8 = INPUT:10
+dlf_4:8 = INPUT:11
+dlf_5:8 = INPUT:12
+dlf_6:8 = INPUT:13
+dlf_7:8 = INPUT:14
+dlf_8:8 = INPUT:15
+#
+#
+OUTPUT:0 = dlf_1:0
+OUTPUT:1 = dlf_2:0
+OUTPUT:2 = dlf_3:0
+OUTPUT:3 = dlf_4:0
+OUTPUT:4 = dlf_5:0
+OUTPUT:5 = dlf_6:0
+OUTPUT:6 = dlf_7:0
+OUTPUT:7 = dlf_8:0
+#
+OUTPUT:8  = dlf_1:1
+OUTPUT:9  = dlf_2:1
+OUTPUT:10 = dlf_3:1
+OUTPUT:11 = dlf_4:1
+OUTPUT:12 = dlf_5:1
+OUTPUT:13 = dlf_6:1
+OUTPUT:14 = dlf_7:1
+OUTPUT:15 = dlf_8:1
+#
+#
+#
+#

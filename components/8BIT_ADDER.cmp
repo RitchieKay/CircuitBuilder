@@ -1,0 +1,69 @@
+#
+#
+#
+#
+# Two Nor gates
+#
+#
+FULL_ADDER=full_adder_1
+FULL_ADDER=full_adder_2
+FULL_ADDER=full_adder_3
+FULL_ADDER=full_adder_4
+FULL_ADDER=full_adder_5
+FULL_ADDER=full_adder_6
+FULL_ADDER=full_adder_7
+FULL_ADDER=full_adder_8
+#
+# This is the carry in
+full_adder_1:0 = INPUT:16
+# First bit
+full_adder_1:1 = INPUT:0
+full_adder_1:2 = INPUT:8
+# Second bit
+full_adder_2:0 = full_adder_1:1
+full_adder_2:1 = INPUT:1
+full_adder_2:2 = INPUT:9
+# Third bit
+full_adder_3:0 = full_adder_2:1
+full_adder_3:1 = INPUT:2
+full_adder_3:2 = INPUT:10
+# Fourth bit
+full_adder_4:0 = full_adder_3:1
+full_adder_4:1 = INPUT:3
+full_adder_4:2 = INPUT:11
+# Fifth bit
+full_adder_5:0 = full_adder_4:1
+full_adder_5:1 = INPUT:4
+full_adder_5:2 = INPUT:12
+# Sixth bit
+full_adder_6:0 = full_adder_5:1
+full_adder_6:1 = INPUT:5
+full_adder_6:2 = INPUT:13
+# Seventh bit
+full_adder_7:0 = full_adder_6:1
+full_adder_7:1 = INPUT:6
+full_adder_7:2 = INPUT:14
+# Eigth bit
+full_adder_8:0 = full_adder_7:1
+full_adder_8:1 = INPUT:7
+full_adder_8:2 = INPUT:15
+#
+# Outputs
+#
+OUTPUT:0 = full_adder_1:0
+OUTPUT:1 = full_adder_2:0
+OUTPUT:2 = full_adder_3:0
+OUTPUT:3 = full_adder_4:0
+OUTPUT:4 = full_adder_5:0
+OUTPUT:5 = full_adder_6:0
+OUTPUT:6 = full_adder_7:0
+OUTPUT:7 = full_adder_8:0
+#
+# Carry out
+#
+OUTPUT:8 = full_adder_8:1
+#
+#
+#
+#
+#

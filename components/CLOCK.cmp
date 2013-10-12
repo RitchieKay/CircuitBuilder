@@ -1,0 +1,115 @@
+#
+# This is a level triggered D-type flip-flop
+# The 0 input is the 'write' input, the 1 input
+# is the 'data' input. The two outputs are Q and Qbar.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+DE_FLIP_FLOP=flip_flop0
+DE_FLIP_FLOP=flip_flop1
+DE_FLIP_FLOP=flip_flop2
+DE_FLIP_FLOP=flip_flop3
+DE_FLIP_FLOP=flip_flop4
+DE_FLIP_FLOP=flip_flop5
+DE_FLIP_FLOP=flip_flop6
+DE_FLIP_FLOP=flip_flop7
+DE_FLIP_FLOP=flip_flop8
+DE_FLIP_FLOP=flip_flop9
+DE_FLIP_FLOP=flip_flopa
+DE_FLIP_FLOP=flip_flopb
+DE_FLIP_FLOP=flip_flopc
+DE_FLIP_FLOP=flip_flopd
+DE_FLIP_FLOP=flip_flope
+DE_FLIP_FLOP=flip_flopf
+OSCILLATOR=o
+INVERTOR=i
+#
+#
+#
+END_COMPONENTS
+#
+WIRING
+#
+o:0 = INPUT:0
+#
+i:0 = o:0
+OUTPUT:0 = i:0
+#
+flip_flop0:0 = o:0
+flip_flop0:8 = flip_flop0:1
+
+flip_flop1:0 = flip_flop0:0
+flip_flop1:8 = flip_flop1:1
+
+flip_flop2:0 = flip_flop1:0
+flip_flop2:8 = flip_flop2:1
+
+flip_flop3:0 = flip_flop2:0
+flip_flop3:8 = flip_flop3:1
+
+flip_flop4:0 = flip_flop3:0
+flip_flop4:8 = flip_flop4:1
+
+flip_flop5:0 = flip_flop4:0
+flip_flop5:8 = flip_flop5:1
+
+flip_flop6:0 = flip_flop5:0
+flip_flop6:8 = flip_flop6:1
+
+flip_flop7:0 = flip_flop6:0
+flip_flop7:8 = flip_flop7:1
+
+flip_flop8:0 = flip_flop7:0
+flip_flop8:8 = flip_flop8:1
+
+flip_flop9:0 = flip_flop8:0
+flip_flop9:8 = flip_flop9:1
+
+flip_flopa:0 = flip_flop9:0
+flip_flopa:8 = flip_flopa:1
+
+flip_flopb:0 = flip_flopa:0
+flip_flopb:8 = flip_flopb:1
+
+flip_flopc:0 = flip_flopb:0
+flip_flopc:8 = flip_flopc:1
+
+flip_flopd:0 = flip_flopc:0
+flip_flopd:8 = flip_flopd:1
+
+flip_flope:0 = flip_flopd:0
+flip_flope:8 = flip_flope:1
+
+flip_flopf:0 = flip_flope:0
+flip_flopf:8 = flip_flopf:1
+
+
+OUTPUT:1 = flip_flop0:1
+OUTPUT:2 = flip_flop1:1
+OUTPUT:3 = flip_flop2:1
+OUTPUT:4 = flip_flop3:1
+OUTPUT:5 = flip_flop4:1
+OUTPUT:6 = flip_flop5:1
+OUTPUT:7 = flip_flop6:1
+OUTPUT:8 = flip_flop7:1
+OUTPUT:9 = flip_flop8:1
+OUTPUT:10 = flip_flop9:1
+OUTPUT:11 = flip_flopa:1
+OUTPUT:12 = flip_flopb:1
+OUTPUT:13 = flip_flopc:1
+OUTPUT:14 = flip_flopd:1
+OUTPUT:15 = flip_flope:1
+OUTPUT:16 = flip_flopf:1
+
+#
+END_WIRING
+#
+#
+#
+#
+#

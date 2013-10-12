@@ -1,0 +1,53 @@
+#
+# This is an 8-bit latch
+# The 8 input is the 'write' input
+# Inputs 0-7 are the data inputs
+# Ourputs 0-7 are the data outputs.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+MEMORY=mem(10, test)
+#
+#
+END_COMPONENTS
+#
+WIRING
+#
+mem:0 = INPUT:0
+mem:1 = INPUT:1
+mem:2 = INPUT:2
+mem:3 = INPUT:3
+mem:4 = INPUT:4
+mem:5 = INPUT:5
+mem:6 = INPUT:6
+mem:7 = INPUT:7
+#
+mem:8 = INPUT:8
+#
+mem:16 = INPUT:16
+mem:17 = INPUT:17
+mem:18 = INPUT:18
+mem:19 = INPUT:19
+mem:20 = INPUT:20
+mem:21 = INPUT:21
+mem:22 = INPUT:22
+mem:23 = INPUT:23
+mem:24 = INPUT:24
+mem:25 = INPUT:25
+#
+OUTPUT:0 = mem:0
+OUTPUT:1 = mem:1
+OUTPUT:2 = mem:2
+OUTPUT:3 = mem:3
+OUTPUT:4 = mem:4
+OUTPUT:5 = mem:5
+OUTPUT:6 = mem:6
+OUTPUT:7 = mem:7
+#
+END_WIRING
+#:

@@ -1,0 +1,94 @@
+# This is an 16 BIT Latch with increment and decrement ability
+# Input 0 is the write input
+# Input 1 is the increment flag
+# Input 2 is the decrement flag
+# Inputs 8-23 are the data inputs
+#
+# Outputs 0-15 are the data outputs
+# Output 16 is the overflow output - i.e. if an inc or dec will cause a wraparound
+#
+# To use, first set the data or one of the flags and then write
+#
+
+8BIT_LATCH_WI=latch_b
+8BIT_LATCH_WI=latch_a
+#
+latch_b:16 = INPUT:0
+#
+OR_GATE = inc_or_dec
+inc_or_dec:0 = INPUT:1
+inc_or_dec:1 = INPUT:2
+#
+INVERTOR=inv
+inv:0 = inc_or_dec:0
+#
+AND_GATE=data_write
+data_write:0 = inv:0
+data_write:1 = INPUT:0
+#
+AND_GATE=inc_dec_write(3)
+inc_dec_write:0 = inc_or_dec:0
+inc_dec_write:1 = INPUT:0
+inc_dec_write:2 = latch_a:8
+#
+OR_GATE=latch_b_write
+latch_b_write:0 = data_write:0
+latch_b_write:1 = inc_dec_write:0
+#
+#
+latch_b:0 = latch_b_write:0
+latch_a:0 = latch_b:16
+#
+AND_GATE = inc_b
+inc_b:0 = INPUT:1
+inc_b:1 = latch_a:8
+#
+latch_b:1 = inc_b:0
+latch_a:1 = INPUT:1
+#
+AND_GATE = dec_b
+dec_b:0 = INPUT:2
+dec_b:1 = latch_a:8
+#
+latch_b:2 = latch_b:2
+latch_a:2 = INPUT:2
+#
+latch_b:8  = INPUT:16
+latch_b:9  = INPUT:17
+latch_b:10 = INPUT:18
+latch_b:11 = INPUT:19
+latch_b:12 = INPUT:20
+latch_b:13 = INPUT:21
+latch_b:14 = INPUT:22
+latch_b:15 = INPUT:23
+#
+latch_a:8  = INPUT:8
+latch_a:9  = INPUT:9
+latch_a:10 = INPUT:10
+latch_a:11 = INPUT:11
+latch_a:12 = INPUT:12
+latch_a:13 = INPUT:13
+latch_a:14 = INPUT:14
+latch_a:15 = INPUT:15
+#
+OUTPUT:0 = latch_a:0
+OUTPUT:1 = latch_a:1
+OUTPUT:2 = latch_a:2
+OUTPUT:3 = latch_a:3
+OUTPUT:4 = latch_a:4
+OUTPUT:5 = latch_a:5
+OUTPUT:6 = latch_a:6
+OUTPUT:7 = latch_a:7
+#
+OUTPUT:8  = latch_b:0
+OUTPUT:9  = latch_b:1
+OUTPUT:10 = latch_b:2
+OUTPUT:11 = latch_b:3
+OUTPUT:12 = latch_b:4
+OUTPUT:13 = latch_b:5
+OUTPUT:14 = latch_b:6
+OUTPUT:15 = latch_b:7
+#
+OUTPUT:16 = latch_b:8
+
+#

@@ -1,0 +1,941 @@
+#
+# This performs the main processing of the 8080 chip.
+# Inputs 0-7 represent an instruction
+# Inputs 8-10 are the driver clock
+# Inputs 16-23 are data typically from registers or memory
+# Inputs 24-31 are from the accumulator
+# Output 0 is a signal to reset the driver.
+# Output 1 is a signal to write data to memory
+# Output 4 is a signal to provide data to proc from RAM rather than registers
+# Output 5 is a signal to provide data to registers from proc rather than from RAM 
+# Output 8-15 is data from the registers
+# Output 31 is the halt signal
+#
+# Arithmetic Logic Unit
+8080_ALU=alu
+# Invertors to invert each input pin
+#
+# OR gate to reset the driver
+OR_GATE=driver_reset_or(16)
+OR_GATE=driver_reset_to_zero_or
+OR_GATE=proc_data1_or(4)
+OR_GATE=reg_data1_or(4)
+OR_GATE=reg_data2_or(4)
+OR_GATE=ram_address_or(6)
+OR_GATE=ram_data_source_or_0
+OR_GATE=ram_data_source_or_1
+OR_GATE=program_counter_or
+OR_GATE=program_counter_sel_or
+OR_GATE=halt_or
+OR_GATE=select_bc_or
+OR_GATE=select_de_or
+#
+# 4 way OR for signal to write to memory
+OR_GATE=ram_write_signal(8)
+OR_GATE=ram_address_signal(4)
+#
+# 4-1 Selectors for the 6 register address pins
+8-1SELECT=reg_select_0
+8-1SELECT=reg_select_1
+8-1SELECT=reg_select_2
+8-1SELECT=reg_select_3
+8-1SELECT=reg_select_4
+8-1SELECT=reg_select_5
+OR_GATE=reg_select_0_or(4)
+OR_GATE=reg_select_1_or(4)
+OR_GATE=reg_select_2_or(2)
+#
+reg_select_0:8 = reg_select_0_or:0
+reg_select_1:8 = reg_select_0_or:0
+reg_select_2:8 = reg_select_0_or:0
+reg_select_3:8 = reg_select_0_or:0
+reg_select_4:8 = reg_select_0_or:0
+reg_select_5:8 = reg_select_0_or:0
+#
+reg_select_0:9 = reg_select_1_or:0
+reg_select_1:9 = reg_select_1_or:0
+reg_select_2:9 = reg_select_1_or:0
+reg_select_3:9 = reg_select_1_or:0
+reg_select_4:9 = reg_select_1_or:0
+reg_select_5:9 = reg_select_1_or:0
+#
+reg_select_0:10 = reg_select_2_or:0
+reg_select_1:10 = reg_select_2_or:0
+reg_select_2:10 = reg_select_2_or:0
+reg_select_3:10 = reg_select_2_or:0
+reg_select_4:10 = reg_select_2_or:0
+reg_select_5:10 = reg_select_2_or:0
+# 4 way OR for the register data source
+OR_GATE=reg_data_source(4)
+# 4 way OR for the register write signal
+OR_GATE=reg_write_signal(8)
+NOR_GATE=suppress_reg_write
+AND_GATE=reg_write_final
+#
+reg_write_final:0 = reg_write_signal:0
+reg_write_final:1 = suppress_reg_write:0
+# First pin of each is set high so accumulator is default output
+reg_select_0:0=HIGH
+reg_select_1:0=HIGH
+reg_select_2:0=HIGH
+reg_select_3:0=HIGH
+reg_select_4:0=HIGH
+reg_select_5:0=HIGH
+# Second pin of each is set to input pins 0-5 for the case of move instructions
+reg_select_0:1 = INPUT:0
+reg_select_1:1 = INPUT:1
+reg_select_2:1 = INPUT:2
+reg_select_3:1 = INPUT:3
+reg_select_4:1 = INPUT:4
+reg_select_5:1 = INPUT:5
+#
+# Third pin 
+reg_select_0:2=INPUT:0
+reg_select_1:2=INPUT:1
+reg_select_2:2=INPUT:2
+reg_select_3:2=HIGH
+reg_select_4:2=HIGH
+reg_select_5:2=HIGH
+#
+reg_select_0:3=HIGH
+reg_select_1:3=HIGH
+reg_select_2:3=HIGH
+reg_select_3:3=INPUT:3
+reg_select_4:3=INPUT:4
+reg_select_5:3=INPUT:5
+#
+reg_select_0:6=INPUT:3
+reg_select_1:6=INPUT:4
+reg_select_2:6=INPUT:5
+reg_select_3:6=INPUT:3
+reg_select_4:6=INPUT:4
+reg_select_5:6=INPUT:5
+
+# ALU
+# 
+alu:0 = INPUT:16
+alu:1 = INPUT:17
+alu:2 = INPUT:18
+alu:3 = INPUT:19
+alu:4 = INPUT:20
+alu:5 = INPUT:21
+alu:6 = INPUT:22
+alu:7 = INPUT:23
+#
+alu:8 = INPUT:24
+alu:9 = INPUT:25
+alu:10 = INPUT:26
+alu:11 = INPUT:27
+alu:12 = INPUT:28
+alu:13 = INPUT:29
+alu:14 = INPUT:30
+alu:15 = INPUT:31
+#
+alu:24 = INPUT:0
+alu:25 = INPUT:1
+alu:26 = INPUT:2
+alu:27 = INPUT:3
+alu:28 = INPUT:4
+alu:29 = INPUT:5
+alu:30 = INPUT:6
+alu:31 = INPUT:7
+#################################################################
+# Processor status words
+#################################################################
+OR_GATE=psw_latch_or(3)
+#
+8BIT_LATCH=psw
+#
+psw:8 = alu:8
+psw:9 = alu:9
+psw:10 = alu:10
+psw:11 = alu:11
+psw:12 = alu:12
+psw:0 = psw_latch_or:0
+#
+# Pass flags back to ALU
+#
+alu:20 = psw:0
+alu:21 = psw:1
+alu:22 = psw:2
+alu:23 = psw:3
+#################################################################
+# DRIVER TICKS
+AND_GATE=driver_one(4)
+AND_GATE=driver_two(4)
+AND_GATE=driver_three(4)
+AND_GATE=driver_four(4)
+AND_GATE=driver_five(4)
+AND_GATE=driver_seven(4)
+AND_GATE=driver_eight(4)
+AND_GATE=driver_ten(4)
+AND_GATE=driver_eleven(4)
+AND_GATE=driver_twelve(4)
+#
+#
+driver_one:0 = INPUT:8
+driver_one:1 = INVERT:9
+driver_one:2 = INVERT:10
+driver_one:3 = INVERT:11
+#
+driver_two:0 = INVERT:8
+driver_two:1 = INPUT:9
+driver_two:2 = INVERT:10
+driver_two:3 = INVERT:11
+#
+driver_three:0 = INPUT:8
+driver_three:1 = INPUT:9
+driver_three:2 = INVERT:10
+driver_three:3 = INVERT:11
+#
+driver_four:0 = INVERT:8
+driver_four:1 = INVERT:9
+driver_four:2 = INPUT:10
+driver_four:3 = INVERT:11
+#
+driver_five:0 = INPUT:8
+driver_five:1 = INVERT:9
+driver_five:2 = INPUT:10
+driver_five:3 = INVERT:11
+#
+driver_seven:0 = INPUT:8
+driver_seven:1 = INPUT:9
+driver_seven:2 = INPUT:10
+driver_seven:3 = INVERT:11
+#
+driver_eight:0 = INVERT:8
+driver_eight:1 = INVERT:9
+driver_eight:2 = INVERT:10
+driver_eight:3 = INPUT:11
+#
+driver_ten:0 = INVERT:8
+driver_ten:1 = INPUT:9
+driver_ten:2 = INVERT:10
+driver_ten:3 = INPUT:11
+#
+driver_eleven:0 = INPUT:8
+driver_eleven:1 = INPUT:9
+driver_eleven:2 = INVERT:10
+driver_eleven:3 = INPUT:11
+#
+driver_twelve:0 = INVERT:8
+driver_twelve:1 = INVERT:9
+driver_twelve:2 = INPUT:10
+driver_twelve:3 = INPUT:11
+#
+################################################################
+SECTION=NOP
+  AND_GATE=nop_and(8)
+  nop_and:0 = INVERT:0
+  nop_and:1 = INVERT:1
+  nop_and:2 = INVERT:2
+  nop_and:3 = INVERT:3
+  nop_and:4 = INVERT:4
+  nop_and:5 = INVERT:5
+  nop_and:6 = INVERT:6
+  nop_and:7 = INVERT:7
+  # Perform the reset if the clock signal from the driver is 001
+  AND_GATE=nop_2and
+  nop_2and:0 = nop_and:0
+  nop_2and:1 = driver_one:0
+
+  driver_reset_or:0 = nop_2and:0
+
+END_SECTION
+
+# This is just a type of MOV (see below) where the destination is the address given
+# by memory pair 
+SECTION=STAX
+
+  AND_GATE=stax_and(7)
+  stax_and:0 = INVERT:0
+  stax_and:1 = INPUT:1
+  stax_and:2 = INVERT:2
+  stax_and:3 = INVERT:3
+  stax_and:4 = INVERT:5
+  stax_and:5 = INVERT:6
+  stax_and:6 = INVERT:7
+
+  # select bc or de
+  AND_GATE=stax_bc
+  stax_bc:0 = stax_and:0
+  stax_bc:1 = INVERT:4
+  AND_GATE=stax_de
+  stax_de:0 = stax_and:0
+  stax_de:1 = INPUT:4
+
+  select_bc_or:0 = stax_bc:0
+  select_de_or:0 = stax_de:0
+
+  # In either case we want to set the address for the memory to BC DE
+  # as long as driver = 000 or 001
+
+  AND_GATE=stax_ram_and
+  stax_ram_and:0 = stax_and:0
+  stax_ram_and:1 = INVERT:9
+
+  ram_address_or:0 = stax_ram_and:0 
+
+  # Perform the write if the clock signal from the driver is 001
+  AND_GATE=stax_write_and
+  stax_write_and:0 = stax_and:0
+  stax_write_and:1 = driver_one:0
+
+  AND_GATE=stax_reset_and
+  stax_reset_and:0 = stax_and:0
+  stax_reset_and:1 = driver_two:0
+
+  ram_write_signal:0 = stax_write_and:0
+
+  driver_reset_or:1 = stax_reset_and:0
+
+END_SECTION
+
+# This is just a type of MOV (see below) where the destination is the address given
+# by memory pair 
+# We are always writing to the registers
+SECTION=LDAX
+
+  AND_GATE=ldax_and(7)
+  ldax_and:0 = INVERT:0
+  ldax_and:1 = INPUT:1
+  ldax_and:2 = INVERT:2
+  ldax_and:3 = INPUT:3
+  ldax_and:4 = INVERT:5
+  ldax_and:5 = INVERT:6
+  ldax_and:6 = INVERT:7
+
+  # select bc or de
+  # select bc or de
+  AND_GATE=ldax_bc
+  ldax_bc:0 = ldax_and:0
+  ldax_bc:1 = INVERT:4
+  AND_GATE=ldax_de
+  ldax_de:0 = ldax_and:0
+  ldax_de:1 = INPUT:4
+
+  select_bc_or:1 = ldax_bc:0
+  select_de_or:1 = ldax_de:0
+
+  # In either case we want to set the address for the memory to BC DE
+  # as long as driver = 000 or 001
+
+  AND_GATE=ldax_ram_and
+  ldax_ram_and:0 = ldax_and:0
+  ldax_ram_and:1 = INVERT:9
+
+  ram_address_or:1 = ldax_ram_and:0
+
+  # Perform the write if the clock signal from the driver is 001
+  AND_GATE=ldax_write_and
+  ldax_write_and:0 = ldax_and:0
+  ldax_write_and:1 = driver_one:0
+
+  AND_GATE=ldax_reset_and
+  ldax_reset_and:0 = ldax_and:0
+  ldax_reset_and:1 = driver_two:0
+
+  reg_write_signal:0 = ldax_write_and:0
+
+  driver_reset_or:2 = ldax_reset_and:0
+
+END_SECTION
+
+
+# In general the bits dddsss of the register input are set to high meaning 'the accumulator'
+# There are only a few cases where the inputs are different
+# For now, this means the move instruction
+#
+# Move instruction. If pin 7 = 0 and pin 6 = 1 then we have a move instruction.
+#
+# And gate for move instruction
+
+SECTION=MOV
+
+  AND_GATE=move_and
+  AND_GATE=mov_write_and
+  move_and:0 = INVERT:7
+  move_and:1 = INPUT:6
+  # bits 0-2 represent source
+  # bits 3-5 represent destination
+
+  # Special case if ddd or sss = 110 deal with later
+  # General behaviour is to trigger a write on the registers with appropriate address inputs
+  #
+  # For the moment the address signal to the register selector is 0 if not a move and 1 if a move
+  reg_select_0_or:0 = move_and:0
+
+  # Destination is memory address given by HL
+  AND_GATE=dest_m_and(4)
+  dest_m_and:0 = move_and:0
+  dest_m_and:1 = INVERT:3
+  dest_m_and:2 = INPUT:4
+  dest_m_and:3 = INPUT:5
+  # Source is memory address given by HL
+  AND_GATE=src_m_and(4)
+  src_m_and:0 = move_and:0
+  src_m_and:1 = INVERT:0
+  src_m_and:2 = INPUT:1
+  src_m_and:3 = INPUT:2
+
+  ################################################
+  # !!! HALT !!!
+  #
+  # If source and destination HL then this is HALT!
+  ################################################
+
+  AND_GATE=halt_and
+  halt_and:0 = dest_m_and:0
+  halt_and:1 = src_m_and:0
+  halt_or:0 = halt_and:0
+
+  #
+  XOR_GATE=m_or
+  m_or:0 = dest_m_and:0
+  m_or:1 = src_m_and:0
+  # In either case we want to set the address for the memory to HL
+  # as long as driver = 000 or 001
+  AND_GATE=zero_and(3)
+  zero_and:0 = INVERT:10
+  zero_and:1 = INVERT:9
+  zero_and:2 = m_or:0
+
+  ram_address_or:2 = zero_and:0
+
+  # Perform the write if the clock signal from the driver is 001
+  mov_write_and:0 = move_and:0
+  mov_write_and:1 = driver_one:0
+
+  AND_GATE=mov_reset_and
+  mov_reset_and:0 = move_and:0
+  mov_reset_and:1 = driver_two:0
+
+  # If a move instruction input to registers is taken from register output rather than data input
+  # which is the case unless the source is memory
+  INVERTOR=test_inv
+  test_inv:0 = src_m_and:0
+
+  AND_GATE=reg_source_and
+  reg_source_and:0 = move_and:0
+  reg_source_and:1 = test_inv:0
+
+  reg_data_source:0 = reg_source_and:0
+
+  # We write to memory if the destination is memory
+  AND_GATE=mem_dest_and
+  mem_dest_and:0 = mov_write_and:0
+  mem_dest_and:1 = dest_m_and:0
+
+  ram_write_signal:1 = mem_dest_and:0
+
+  # Always set the register write signal, it will have no effect if the write is to memory
+
+  AND_GATE=reg_write_and
+  INVERTOR=inv_m_dest
+  inv_m_dest:0 = dest_m_and:0
+
+  reg_write_and:0 = mov_write_and:0
+  reg_write_and:1 = inv_m_dest:0
+
+  reg_write_signal:1 = reg_write_and:0
+  # Set the output bit to reset the driver - i.e. processing of this instruction complete.
+
+  driver_reset_or:3 = mov_reset_and:0
+
+
+END_SECTION
+
+SECTION=MVI
+
+  AND_GATE=mvi_5and(5)
+
+  mvi_5and:0 = INVERT:0
+  mvi_5and:1 = INPUT:1
+  mvi_5and:2 = INPUT:2
+  mvi_5and:3 = INVERT:6
+  mvi_5and:4 = INVERT:7
+
+  # Destination is memory address given by HL
+  AND_GATE=dest_m_and(4)
+  dest_m_and:0 = mvi_5and:0
+  dest_m_and:1 = INVERT:3
+  dest_m_and:2 = INPUT:4
+  dest_m_and:3 = INPUT:5
+
+  # In either case we want to set the address for the memory to HL
+  # when the driver = 011 or 100
+  AND_GATE=mem_and
+  mem_and:0 = driver_four:0
+  mem_and:1 = dest_m_and:0
+
+  ram_address_or:3 = mem_and:0
+
+  # Select the data input to the registers to be the first data byte from RAM
+  reg_data2_or:0 = mvi_5and:0
+
+  # Perform the write if the clock signal from the driver is 100
+
+  AND_GATE=mvi_write_and
+  mvi_write_and:0 = mvi_5and:0
+  mvi_write_and:1 = driver_four:0
+#  mvi_write_and:1 = INPUT:8
+#  mvi_write_and:2 = INPUT:9
+#  mvi_write_and:3 = INVERT:10
+
+  # Perform the reset if the clock signal from the driver is 101
+
+  AND_GATE=mvi_reset_and
+  mvi_reset_and:0 = mvi_5and:0
+  mvi_reset_and:1 = driver_five:0
+
+  # We write to memory if the destination is memory
+  AND_GATE=mem_dest_and
+  mem_dest_and:0 = mvi_write_and:0
+  mem_dest_and:1 = dest_m_and:0
+
+  ram_data_source_or_0:0 = mem_dest_and:0
+
+#  ram_write_signal:1 = mem_dest_and:0
+  ram_write_signal:2 = mem_dest_and:0
+
+  reg_select_0_or:1 = mvi_5and:0
+  reg_select_1_or:1 = mvi_5and:0
+
+  AND_GATE=reg_write_and
+  INVERTOR=inv_m_dest
+  inv_m_dest:0 = dest_m_and:0
+
+  reg_write_and:0 = mvi_write_and:0
+  reg_write_and:1 = inv_m_dest:0
+
+  reg_write_signal:2 = reg_write_and:0
+  driver_reset_or:4 = mvi_reset_and:0
+
+END_SECTION
+
+# Load the accumulator
+SECTION=LDA
+  AND_GATE=lda_8and(8)
+  AND_GATE=lda_4and
+  AND_GATE=lda_reset_and
+  lda_8and:0 = INVERT:0
+  lda_8and:1 = INPUT:1
+  lda_8and:2 = INVERT:2
+  lda_8and:3 = INPUT:3
+  lda_8and:4 = INPUT:4
+  lda_8and:5 = INPUT:5
+  lda_8and:6 = INVERT:6
+  lda_8and:7 = INVERT:7
+
+  # Perform the write if the clock signal from the driver is 1010
+  lda_4and:0 = lda_8and:0
+  lda_4and:1 = driver_ten:0
+  reg_write_signal:3 = lda_4and:0
+
+  # Perform the reset if the clock signal from the driver is 1011
+  lda_reset_and:0 = lda_8and:0
+  lda_reset_and:1 = driver_twelve:0
+
+  driver_reset_or:5 = lda_reset_and:0
+
+END_SECTION
+
+# Store accumulator
+
+SECTION=STA
+  AND_GATE=sta_8and(8)
+  AND_GATE=sta_4and0
+  AND_GATE=sta_4and1
+  AND_GATE=sta_4and2
+  OR_GATE=sta_or
+  sta_8and:0 = INVERT:0
+  sta_8and:1 = INPUT:1
+  sta_8and:2 = INVERT:2
+  sta_8and:3 = INVERT:3
+  sta_8and:4 = INPUT:4
+  sta_8and:5 = INPUT:5
+  sta_8and:6 = INVERT:6
+  sta_8and:7 = INVERT:7
+  # Perform the write if the clock signal from the driver is 1010
+  sta_4and0:0 = sta_8and:0
+  sta_4and0:1 = driver_ten:0
+  #
+  sta_4and1:0 = sta_8and:0
+  sta_4and1:1 = driver_eleven:0
+  #
+  sta_or:0 = sta_4and0:0
+  sta_or:1 = sta_4and1:0
+  #
+  ram_address_signal:0 = sta_or:0
+  ram_write_signal:3 = sta_4and1:0
+  #
+  # Driver reset if clock signal is 1100
+  sta_4and2:0 = sta_8and:0
+  sta_4and2:1 = driver_twelve:0
+
+  driver_reset_or:6 = sta_4and2:0
+
+END_SECTION
+
+SECTION=JUMP
+
+  INVERTOR=inv_psw0
+  INVERTOR=inv_psw1
+  INVERTOR=inv_psw2
+  INVERTOR=inv_psw3
+
+  inv_psw0:0 = psw:0
+  inv_psw1:0 = psw:1
+  inv_psw2:0 = psw:2
+  inv_psw3:0 = psw:3
+
+  AND_GATE=jump_and(4)
+  jump_and:0 = INPUT:7
+  jump_and:1 = INPUT:6
+  jump_and:2 = INVERT:2
+  jump_and:3 = INPUT:1
+
+  AND_GATE=cond_jump_and
+  cond_jump_and:0 = jump_and:0
+  cond_jump_and:1 = INVERT:0
+
+  AND_GATE=plain_jump_and(5)
+  plain_jump_and:0 = jump_and:0
+  plain_jump_and:1 = INPUT:0
+  plain_jump_and:2 = INVERT:3
+  plain_jump_and:3 = INVERT:4
+  plain_jump_and:4 = INVERT:5
+
+  OR_GATE=cond_jump_match(8)
+  OR_GATE=perform_jump_or
+  perform_jump_or:0 = plain_jump_and:0
+  perform_jump_or:1 = cond_jump_match:0
+
+  # Jump if not zero
+  AND_GATE=jnz_and(5)
+  jnz_and:0 = cond_jump_and:0
+  jnz_and:1 = inv_psw1:0
+  jnz_and:2 = INVERT:3
+  jnz_and:3 = INVERT:4
+  jnz_and:4 = INVERT:5
+
+  cond_jump_match:0 = jnz_and:0
+
+  # Jump if zero 
+  AND_GATE=jz_and(5)
+  jz_and:0 = cond_jump_and:0
+  jz_and:1 = psw:1
+  jz_and:2 = INPUT:3
+  jz_and:3 = INVERT:4
+  jz_and:4 = INVERT:5
+
+  cond_jump_match:1 = jz_and:0
+
+  # Jump if not carry
+  AND_GATE=jnc_and(5)
+  jnc_and:0 = cond_jump_and:0
+  jnc_and:1 = inv_psw0:0
+  jnc_and:2 = INVERT:3
+  jnc_and:3 = INPUT:4
+  jnc_and:4 = INVERT:5
+
+  cond_jump_match:2 = jnc_and:0
+
+  # Jump if carry
+  AND_GATE=jc_and(5)
+  jc_and:0 = cond_jump_and:0
+  jc_and:1 = psw:0
+  jc_and:2 = INPUT:3
+  jc_and:3 = INPUT:4
+  jc_and:4 = INVERT:5
+
+  cond_jump_match:3 = jc_and:0
+
+  # Jump if not parity
+  AND_GATE=jpo_and(5)
+  jpo_and:0 = cond_jump_and:0
+  jpo_and:1 = inv_psw3:0
+  jpo_and:2 = INVERT:3
+  jpo_and:3 = INVERT:4
+  jpo_and:4 = INPUT:5
+
+  cond_jump_match:4 = jpo_and:0
+
+  # Jump if  parity
+  AND_GATE=jpe_and(5)
+  jpe_and:0 = cond_jump_and:0
+  jpe_and:1 = psw:3
+  jpe_and:2 = INPUT:3
+  jpe_and:3 = INVERT:4
+  jpe_and:4 = INPUT:5
+
+  cond_jump_match:5 = jpe_and:0
+
+  # Jump if not sign
+  AND_GATE=jp_and(5)
+  jp_and:0 = cond_jump_and:0
+  jp_and:1 = inv_psw2:0
+  jp_and:2 = INVERT:3
+  jp_and:3 = INPUT:4
+  jp_and:4 = INPUT:5
+
+  cond_jump_match:6 = jp_and:0
+
+  # Jump if sign
+  AND_GATE=jm_and(5)
+  jm_and:0 = cond_jump_and:0
+  jm_and:1 = psw:2
+  jm_and:2 = INPUT:3
+  jm_and:3 = INPUT:4
+  jm_and:4 = INPUT:5
+
+  cond_jump_match:7 = jm_and:0
+
+  # Perform the jump if the clock signal from the driver is 1000
+  AND_GATE=perform_jump_and(3)
+  perform_jump_and:0 = perform_jump_or:0
+  perform_jump_and:1 = INVERT:8
+#  perform_jump_and:2 = INPUT:9
+#  perform_jump_and:3 = INPUT:10
+  perform_jump_and:2 = INPUT:11
+
+  program_counter_or:0 = perform_jump_and:0
+#  driver_reset_to_zero_or:0 = perform_jump_or:0
+  driver_reset_or:7 = perform_jump_and:0
+
+END_SECTION
+
+SECTION=PCHL
+
+  AND_GATE=pchl_and(8)
+  pchl_and:0 = INPUT:0
+  pchl_and:1 = INPUT:3
+  pchl_and:2 = INPUT:5
+  pchl_and:3 = INPUT:6
+  pchl_and:4 = INPUT:7
+  pchl_and:5 = INVERT:1
+  pchl_and:6 = INVERT:2
+  pchl_and:7 = INVERT:4
+
+  program_counter_sel_or:0 = pchl_and:0  
+
+  # Perform the jump if the clock signal from the driver is 10
+
+  AND_GATE=pchl_perform_and(3)
+  pchl_perform_and:0 = pchl_and:0
+  pchl_perform_and:1 = INVERT:8
+  pchl_perform_and:2 = INPUT:9
+
+  program_counter_or:1 = pchl_perform_and:0
+
+  # reset driver
+
+  driver_reset_or:8 = pchl_perform_and:0
+
+END_SECTION
+
+# The ALU unit itself recognises instructions. If it recognises one then we simply store
+# result in the accumulator when the clock signal is 001 so long as not a special case
+# of an operation on an immediate byte or one addressed by HL
+
+SECTION=ALU
+
+  AND_GATE=immediate_or_mem(4)
+  immediate_or_mem:0 = INPUT:7
+  immediate_or_mem:1 = INPUT:2
+  immediate_or_mem:2 = INPUT:1
+  immediate_or_mem:3 = INVERT:0
+
+  # Recognise the immediate instructions
+  AND_GATE=immediate
+  immediate:0 = immediate_or_mem:0
+  immediate:1 = INPUT:6
+
+  # Recognise operations with memory location
+  AND_GATE=op_from_memory
+  op_from_memory:0 = immediate_or_mem:0
+  op_from_memory:1 = INVERT:6
+
+  # Recognise increments + with memory location
+
+  AND_GATE=increment(4)
+  increment:0 = INVERT:1
+  increment:1 = INPUT:2
+  increment:2 = INVERT:6
+  increment:3 = INVERT:7
+  AND_GATE=incr_in_memory(4)
+  incr_in_memory:0 = increment:0
+  incr_in_memory:1 = INVERT:3
+  incr_in_memory:2 = INPUT:4
+  incr_in_memory:3 = INPUT:5
+
+  INVERTOR=inv_immed
+  INVERTOR=inv_mem_inc
+#  inv_immed:0 = immediate_or_mem:0
+
+  OR_GATE=incr_in_memory_write
+  inv_immed:0 = immediate_or_mem:0
+  inv_mem_inc:0 = incr_in_memory:0
+
+  # Perform the write if the clock signal from the driver is 011
+
+  SECTION=INCREMENT_DECREMENT
+
+  # Important for increments and decrements the operation is not performed on the
+  # accumlator
+  #alu:16 = increment:0
+
+  reg_select_2_or:0 = increment:0
+
+  incr_in_memory_write:0 = incr_in_memory:0
+  suppress_reg_write:0 = incr_in_memory:0
+#  no_default_reset:1 = incr_in_memory:0
+  # Need to make sure that the input to PROC is from [HL] and that we
+  proc_data1_or:0 = incr_in_memory:0
+  # write to memory
+  # RAM address is from HL if mem
+
+  AND_GATE=alu_mem_inc_and
+  alu_mem_inc_and:0 = incr_in_memory:0
+  alu_mem_inc_and:1 = INVERT:9
+
+  ram_address_or:4 = alu_mem_inc_and:0
+
+  AND_GATE=ram_write_incr
+  ram_write_incr:0 = incr_in_memory:0
+  ram_write_incr:1 = driver_one:0
+
+  ram_data_source_or_1:1 = ram_write_incr:0
+
+  ram_write_signal:4 = ram_write_incr:0
+
+  AND_GATE=incr_in_mem_reset
+  incr_in_mem_reset:0 = incr_in_memory:0
+  incr_in_mem_reset:1 = driver_two:0
+
+  driver_reset_or:9 = incr_in_mem_reset:0
+
+  END_SECTION
+
+  # This only has an effect if not an immediate!
+
+  SECTION=NOT_IMMEDIATE
+
+    INVERTOR=mem_loc_inv
+    AND_GATE=alu_and(4)
+    alu_and:0 = alu:16
+    alu_and:1 = driver_one:0
+    alu_and:2 = inv_immed:0
+    alu_and:3 = inv_mem_inc:0
+    # Don't write to a register if the write location is memory
+    reg_write_signal:4 = alu_and:0
+    driver_reset_or:10  = alu_and:0
+
+    psw_latch_or:0 = alu_and:0
+
+    AND_GATE=and(3)
+    and:0 = inv_immed:0
+    and:1 = alu:16
+    and:2 = inv_mem_inc:0
+
+  # Need to select the register for read
+    reg_select_1_or:0 = and:0
+
+
+  END_SECTION
+
+  SECTION=IMMEDIATE_OR_MEM
+
+    # secondary data to the ALU (via PROC) comes from memory not registers
+
+    proc_data1_or:1 = immediate_or_mem:0
+
+    # RAM address is from HL if mem
+
+    AND_GATE=alu_mem_and
+    alu_mem_and:0 = op_from_memory:0
+    alu_mem_and:1 = INVERT:9
+
+    ram_address_or:5 = alu_mem_and:0
+
+    # Perform the write if the clock signal from the driver is 100
+
+    AND_GATE=immed_wri_and
+    immed_wri_and:0 = immediate_or_mem:0
+    immed_wri_and:1 = driver_four:0
+
+    AND_GATE=mem_loc_wri_and
+    mem_loc_wri_and:0 = op_from_memory:0
+    mem_loc_wri_and:1 = driver_one:0
+
+    AND_GATE=immed_driver_reset_and
+    immed_driver_reset_and:0 = immediate:0
+    immed_driver_reset_and:1 = driver_four:0
+
+    AND_GATE=mem_loc_driver_reset_and
+    mem_loc_driver_reset_and:0 = op_from_memory:0
+    mem_loc_driver_reset_and:1 = driver_one:0
+
+    reg_write_signal:5 = immed_wri_and:0
+    driver_reset_or:11 = immed_driver_reset_and:0
+
+    reg_write_signal:6 = mem_loc_wri_and:0
+    driver_reset_or:12 = mem_loc_driver_reset_and:0
+    # select accumlator as standard inpt and output
+    # is by default anyway
+    psw_latch_or:1 = immed_wri_and:0
+    psw_latch_or:2 = mem_loc_wri_and:0
+
+  END_SECTION
+
+   # Provide data to registers (accumulator) from PROC in all cases
+   reg_data1_or:0 = alu:16
+  #
+END_SECTION
+# Set driver reset signal
+OUTPUT:0 = driver_reset_or:0
+OUTPUT:1 = ram_write_signal:0
+OUTPUT:2 = ram_address_signal:0
+OUTPUT:4 = proc_data1_or:0
+OUTPUT:5 = reg_data1_or:0
+OUTPUT:6 = reg_data2_or:0
+OUTPUT:7 = ram_address_or:0
+#
+OUTPUT:8 = alu:0
+OUTPUT:9 = alu:1
+OUTPUT:10 = alu:2
+OUTPUT:11 = alu:3
+OUTPUT:12 = alu:4
+OUTPUT:13 = alu:5
+OUTPUT:14 = alu:6
+OUTPUT:15 = alu:7
+# Data output from registers
+#OUTPUT:16 = reg_write_signal:0
+OUTPUT:16 = reg_write_final:0
+OUTPUT:17 = reg_data_source:0
+OUTPUT:18 = reg_select_0:0
+OUTPUT:19 = reg_select_1:0
+OUTPUT:20 = reg_select_2:0
+OUTPUT:21 = reg_select_3:0
+OUTPUT:22 = reg_select_4:0
+OUTPUT:23 = reg_select_5:0
+#
+OUTPUT:24 = ram_data_source_or_0:0
+OUTPUT:25 = ram_data_source_or_1:0
+OUTPUT:26 = program_counter_sel_or:0
+OUTPUT:27 = program_counter_or:0
+#OUTPUT:28 = driver_reset_to_zero_or:0
+#
+#OUTPUT:28 = psw:0
+#OUTPUT:29 = psw:1
+#OUTPUT:30 = psw:2
+#OUTPUT:31 = psw:3
+#OUTPUT:27 = alu:8
+#OUTPUT:28 = alu:9
+#OUTPUT:29 = alu:10
+#OUTPUT:30 = alu:11
+
+OUTPUT:31 = halt_or:0
+#
+OUTPUT:32 = select_bc_or:0
+OUTPUT:33 = select_de_or:0

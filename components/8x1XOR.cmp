@@ -1,0 +1,43 @@
+#
+#
+#
+XOR_GATE=xor0
+XOR_GATE=xor1
+XOR_GATE=xor2
+XOR_GATE=xor3
+XOR_GATE=xor4
+XOR_GATE=xor5
+XOR_GATE=xor6
+XOR_GATE=xor7
+#
+#
+#
+xor0:0 = INPUT:0
+xor0:1 = INPUT:8
+xor1:0 = INPUT:1
+xor1:1 = INPUT:9
+xor2:0 = INPUT:2
+xor2:1 = INPUT:10
+xor3:0 = INPUT:3
+xor3:1 = INPUT:11
+xor4:0 = INPUT:4
+xor4:1 = INPUT:12
+xor5:0 = INPUT:5
+xor5:1 = INPUT:13
+xor6:0 = INPUT:6
+xor6:1 = INPUT:14
+xor7:0 = INPUT:7
+xor7:1 = INPUT:15
+#
+OUTPUT:0 = xor0:0 
+OUTPUT:1 = xor1:0 
+OUTPUT:2 = xor2:0 
+OUTPUT:3 = xor3:0 
+OUTPUT:4 = xor4:0 
+OUTPUT:5 = xor5:0 
+OUTPUT:6 = xor6:0 
+OUTPUT:7 = xor7:0 
+#
+#
+#
+#

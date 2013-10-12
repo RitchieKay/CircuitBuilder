@@ -1,0 +1,126 @@
+# This is an 8-Bit adder and subtractor
+# Input 0-7 are the A inputs
+# Inputs 8-15 are the B inputs
+# Input 16 is the carry in
+# Input 17 means subtract
+# Input 18 means subtract with borrow
+#
+8BIT_ADDER=adder
+#
+2-1SELECT=sel0
+2-1SELECT=sel1
+2-1SELECT=sel2
+2-1SELECT=sel3
+2-1SELECT=sel4
+2-1SELECT=sel5
+2-1SELECT=sel6
+2-1SELECT=sel7
+#
+#INVERTOR=inv0
+#INVERTOR=inv1
+#INVERTOR=inv2
+#INVERTOR=inv3
+#INVERTOR=inv4
+#INVERTOR=inv5
+#INVERTOR=inv6
+#INVERTOR=inv7
+#
+4-1SELECT=carry_sel
+#
+#AND_GATE=carry_and
+#INVERTOR=borrow
+#borrow:0 = INPUT:18
+#carry_and:0 = borrow:0
+#carry_and:1 = INPUT:17
+
+# If adding carry is set to INPUT:16
+# If subtracting carry is set to HIGH
+# If sub with borrow carry is set to inverse of INPUT:16
+
+INVERTOR=carry_inv
+carry_inv:0 = INPUT:16
+carry_sel:0 = INPUT:16
+carry_sel:1 = HIGH
+carry_sel:2 = carry_inv:0
+carry_sel:3 = carry_inv:0
+carry_sel:8 = INPUT:17
+carry_sel:9 = INPUT:18
+#
+adder:0 = INPUT:8
+adder:1 = INPUT:9
+adder:2 = INPUT:10
+adder:3 = INPUT:11
+adder:4 = INPUT:12
+adder:5 = INPUT:13
+adder:6 = INPUT:14
+adder:7 = INPUT:15
+#
+#INVERT:0 = INPUT:0
+#INVERT:1 = INPUT:1
+#INVERT:2 = INPUT:2
+#INVERT:3 = INPUT:3
+#INVERT:4 = INPUT:4
+#INVERT:5 = INPUT:5
+#INVERT:6 = INPUT:6
+#INVERT:7 = INPUT:7
+#
+sel0:0 = INPUT:0
+sel1:0 = INPUT:1
+sel2:0 = INPUT:2
+sel3:0 = INPUT:3
+sel4:0 = INPUT:4
+sel5:0 = INPUT:5
+sel6:0 = INPUT:6
+sel7:0 = INPUT:7
+#
+sel0:1 = INVERT:0
+sel1:1 = INVERT:1
+sel2:1 = INVERT:2
+sel3:1 = INVERT:3
+sel4:1 = INVERT:4
+sel5:1 = INVERT:5
+sel6:1 = INVERT:6
+sel7:1 = INVERT:7
+#
+OR_GATE=sub_or
+sub_or:0 = INPUT:17
+sub_or:1 = INPUT:18
+#
+sel0:8 = sub_or:0
+sel1:8 = sub_or:0 
+sel2:8 = sub_or:0 
+sel3:8 = sub_or:0 
+sel4:8 = sub_or:0 
+sel5:8 = sub_or:0 
+sel6:8 = sub_or:0 
+sel7:8  =sub_or:0 
+#
+adder:8 = sel0:0
+adder:9 = sel1:0
+adder:10 = sel2:0
+adder:11 = sel3:0
+adder:12 = sel4:0
+adder:13 = sel5:0
+adder:14 = sel6:0
+adder:15 = sel7:0
+# 
+adder:16 = carry_sel:0
+#
+OUTPUT:0 = adder:0
+OUTPUT:1 = adder:1
+OUTPUT:2 = adder:2
+OUTPUT:3 = adder:3
+OUTPUT:4 = adder:4
+OUTPUT:5 = adder:5
+OUTPUT:6 = adder:6
+OUTPUT:7 = adder:7
+OUTPUT:8 = adder:8
+#
+OUTPUT:16 = sel0:0
+OUTPUT:17 = sel1:0
+OUTPUT:18 = sel2:0
+OUTPUT:19 = sel3:0
+OUTPUT:20 = sel4:0
+OUTPUT:21 = sel5:0
+OUTPUT:22 = sel6:0
+OUTPUT:23 = sel7:0

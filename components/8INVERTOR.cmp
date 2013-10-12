@@ -1,0 +1,30 @@
+#
+# This inverts 8 bits
+#
+#
+INVERTOR=inv0
+INVERTOR=inv1
+INVERTOR=inv2
+INVERTOR=inv3
+INVERTOR=inv4
+INVERTOR=inv5
+INVERTOR=inv6
+INVERTOR=inv7
+
+inv0:0 = INPUT:0
+inv1:0 = INPUT:1
+inv2:0 = INPUT:2
+inv3:0 = INPUT:3
+inv4:0 = INPUT:4
+inv5:0 = INPUT:5
+inv6:0 = INPUT:6
+inv7:0 = INPUT:7
+#
+OUTPUT:0 = inv0:0
+OUTPUT:1 = inv1:0
+OUTPUT:2 = inv2:0
+OUTPUT:3 = inv3:0
+OUTPUT:4 = inv4:0
+OUTPUT:5 = inv5:0
+OUTPUT:6 = inv6:0
+OUTPUT:7 = inv7:0

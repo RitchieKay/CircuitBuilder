@@ -1,0 +1,44 @@
+#
+# This is an edge triggered D-type flip-flop
+# The 0 input is the 'write' input, the 8 input
+# is the 'data' input. The two outputs are Q and Qbar.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#
+#
+COMPONENTS
+#
+DL_FLIP_FLOP=flip_flop0
+DL_FLIP_FLOP=flip_flop1
+INVERTOR=inv
+BUFFER=buf
+#
+#
+#
+END_COMPONENTS
+#
+WIRING
+#
+inv:0 = INPUT:0
+#
+#buf:0 = INPUT:0
+#flip_flop0:0 = buf:0
+flip_flop0:0 = inv:0
+flip_flop0:8 = INPUT:8
+#
+flip_flop1:0 = INPUT:0
+flip_flop1:8 = flip_flop0:0
+#
+#
+OUTPUT:0 = flip_flop1:0
+OUTPUT:1 = flip_flop1:1
+OUTPUT:8 = flip_flop0:0
+OUTPUT:9 = flip_flop0:1
+#
+END_WIRING
+#
+#
+#
+#

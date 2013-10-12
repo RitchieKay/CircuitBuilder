@@ -1,0 +1,56 @@
+#
+# This extracts code and data from RAM
+# To use first flip bit 2 to trigger the read of
+# the ROM into memory (then flip back)
+# Flip bit 0 to turn on.
+# Flip bit 1 to restart.
+#
+#
+MEMORY=memory(15, test)
+#
+# This is the instruction for the memory to latch the data
+memory:8 = INPUT:0
+# this is the data input to the memory
+memory:0 = INPUT:8
+memory:1 = INPUT:9
+memory:2 = INPUT:10
+memory:3 = INPUT:11
+memory:4 = INPUT:12
+memory:5 = INPUT:13
+memory:6 = INPUT:14
+memory:7 = INPUT:15
+
+# This loads the ROM
+memory:9 = INPUT:1
+memory:10 = INPUT:2
+#
+# ram inputs from selectora
+#
+memory:16 = INPUT:16
+memory:17 = INPUT:17
+memory:18 = INPUT:18
+memory:19 = INPUT:19
+memory:20 = INPUT:20
+memory:21 = INPUT:21
+memory:22 = INPUT:22
+memory:23 = INPUT:23
+memory:24 = INPUT:24
+memory:25 = INPUT:25
+memory:26 = INPUT:26
+memory:27 = INPUT:27
+memory:28 = INPUT:28
+memory:29 = INPUT:29
+memory:30 = INPUT:30
+#
+OUTPUT:0 = memory:0
+OUTPUT:1 = memory:1
+OUTPUT:2 = memory:2
+OUTPUT:3 = memory:3
+OUTPUT:4 = memory:4
+OUTPUT:5 = memory:5
+OUTPUT:6 = memory:6
+OUTPUT:7 = memory:7
+#
+#
+#
+#

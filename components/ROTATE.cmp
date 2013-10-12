@@ -1,0 +1,137 @@
+# This performs rotations
+# INPUTS 0-7 are the data input
+# INPUT 8 is the carry in
+# INPUT 10-11 select the operation
+# 0 = RLC, 1 = RRC, 2 = RAL, 3 = RAR
+#
+# OUTPUTS 0-7 are the data ouput
+# OUTPUT 8 is the carry
+#
+9BUFFER=rotate_left
+9BUFFER=rotate_right
+9BUFFER=rotate_left_carry
+9BUFFER=rotate_right_carry
+#
+rotate_right:0 = INPUT:1
+rotate_right:1 = INPUT:2
+rotate_right:2 = INPUT:3
+rotate_right:3 = INPUT:4
+rotate_right:4 = INPUT:5
+rotate_right:5 = INPUT:6
+rotate_right:6 = INPUT:7
+rotate_right:7 = INPUT:0
+# This is the carry
+rotate_right:8 = INPUT:0
+#
+rotate_left:0 = INPUT:7
+rotate_left:1 = INPUT:0
+rotate_left:2 = INPUT:1
+rotate_left:3 = INPUT:2
+rotate_left:4 = INPUT:3
+rotate_left:5 = INPUT:4
+rotate_left:6 = INPUT:5
+rotate_left:7 = INPUT:6
+#
+rotate_left:8 = INPUT:7
+#
+rotate_left_carry:0 = INPUT:8
+rotate_left_carry:1 = INPUT:0
+rotate_left_carry:2 = INPUT:1
+rotate_left_carry:3 = INPUT:2
+rotate_left_carry:4 = INPUT:3
+rotate_left_carry:5 = INPUT:4
+rotate_left_carry:6 = INPUT:5
+rotate_left_carry:7 = INPUT:6
+rotate_left_carry:8 = INPUT:7
+#
+rotate_right_carry:0 = INPUT:1
+rotate_right_carry:1 = INPUT:2
+rotate_right_carry:2 = INPUT:3
+rotate_right_carry:3 = INPUT:4
+rotate_right_carry:4 = INPUT:5
+rotate_right_carry:5 = INPUT:6
+rotate_right_carry:6 = INPUT:7
+rotate_right_carry:7 = INPUT:8
+rotate_right_carry:8 = INPUT:0
+#
+4-1SELECT=rotate_output_0
+4-1SELECT=rotate_output_1
+4-1SELECT=rotate_output_2
+4-1SELECT=rotate_output_3
+4-1SELECT=rotate_output_4
+4-1SELECT=rotate_output_5
+4-1SELECT=rotate_output_6
+4-1SELECT=rotate_output_7
+4-1SELECT=rotate_output_8
+#
+rotate_output_0:0 = rotate_left:0
+rotate_output_1:0 = rotate_left:1
+rotate_output_2:0 = rotate_left:2
+rotate_output_3:0 = rotate_left:3
+rotate_output_4:0 = rotate_left:4
+rotate_output_5:0 = rotate_left:5
+rotate_output_6:0 = rotate_left:6
+rotate_output_7:0 = rotate_left:7
+rotate_output_8:0 = rotate_left:8
+#
+rotate_output_0:1 = rotate_right:0
+rotate_output_1:1 = rotate_right:1
+rotate_output_2:1 = rotate_right:2
+rotate_output_3:1 = rotate_right:3
+rotate_output_4:1 = rotate_right:4
+rotate_output_5:1 = rotate_right:5
+rotate_output_6:1 = rotate_right:6
+rotate_output_7:1 = rotate_right:7
+rotate_output_8:1 = rotate_right:8
+#
+rotate_output_0:2 = rotate_left_carry:0
+rotate_output_1:2 = rotate_left_carry:1
+rotate_output_2:2 = rotate_left_carry:2
+rotate_output_3:2 = rotate_left_carry:3
+rotate_output_4:2 = rotate_left_carry:4
+rotate_output_5:2 = rotate_left_carry:5
+rotate_output_6:2 = rotate_left_carry:6
+rotate_output_7:2 = rotate_left_carry:7
+rotate_output_8:2 = rotate_left_carry:8
+#
+rotate_output_0:3 = rotate_right_carry:0
+rotate_output_1:3 = rotate_right_carry:1
+rotate_output_2:3 = rotate_right_carry:2
+rotate_output_3:3 = rotate_right_carry:3
+rotate_output_4:3 = rotate_right_carry:4
+rotate_output_5:3 = rotate_right_carry:5
+rotate_output_6:3 = rotate_right_carry:6
+rotate_output_7:3 = rotate_right_carry:7
+rotate_output_8:3 = rotate_right_carry:8
+#
+rotate_output_0:8 = INPUT:10
+rotate_output_1:8 = INPUT:10
+rotate_output_2:8 = INPUT:10
+rotate_output_3:8 = INPUT:10
+rotate_output_4:8 = INPUT:10
+rotate_output_5:8 = INPUT:10
+rotate_output_6:8 = INPUT:10
+rotate_output_7:8 = INPUT:10
+rotate_output_8:8 = INPUT:10
+#
+rotate_output_0:9 = INPUT:11
+rotate_output_1:9 = INPUT:11
+rotate_output_2:9 = INPUT:11
+rotate_output_3:9 = INPUT:11
+rotate_output_4:9 = INPUT:11
+rotate_output_5:9 = INPUT:11
+rotate_output_6:9 = INPUT:11
+rotate_output_7:9 = INPUT:11
+rotate_output_8:9 = INPUT:11
+#
+OUTPUT:0 = rotate_output_0:0
+OUTPUT:1 = rotate_output_1:0
+OUTPUT:2 = rotate_output_2:0
+OUTPUT:3 = rotate_output_3:0
+OUTPUT:4 = rotate_output_4:0
+OUTPUT:5 = rotate_output_5:0
+OUTPUT:6 = rotate_output_6:0
+OUTPUT:7 = rotate_output_7:0
+OUTPUT:8 = rotate_output_8:0
+#
+

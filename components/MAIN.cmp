@@ -1,0 +1,228 @@
+#
+# This extracts code and data from RAM
+# To use first flip bit 2 to trigger the read of
+# the ROM into memory (then flip back)
+# Flip bit 0 to turn on.
+# Flip bit 1 to restart.
+#
+COMPONENTS
+#
+OSCILLATOR=o(10)
+MEMORY=memory(15, test)
+DRIVER=driver
+COUNTER=counter
+8BIT_LATCH=code
+8BIT_LATCH=add1
+8BIT_LATCH=add2
+16x2-1SELECT=sel0
+8x1AND=8x1and0
+8x1AND=8x1and1
+8x1AND=8x1and2
+INVERTOR=inv
+#
+#
+END_COMPONENTS
+#
+WIRING
+#
+o:0 = INPUT:0 
+driver:1 = INPUT:0
+inv:0 = INPUT:0
+# This loads the ROM
+memory:9 = INPUT:1
+driver:0 = o:0
+# This triggers a reset of the counter
+counter:1 = inv:0
+# The instruction for the counter to increment
+counter:0 = driver:0
+# The instruction for the code latch to latch
+code:0 = driver:1
+#code:0 = INPUT:2
+# The instruction for the address1 latch to latch
+add1:0 = driver:2
+# The instruction for the address2 latch to latch
+add2:0 = driver:3
+#
+# The instruction for the selector to take input from memory (0) or address latches (1)
+sel0:31 = driver:4
+#
+# Address inputs to the selector from the counter 15 for now
+sel0:0 = counter:0
+sel0:1 = counter:1
+sel0:2 = counter:2
+sel0:3 = counter:3
+sel0:4 = counter:4
+sel0:5 = counter:5
+sel0:6 = counter:6
+sel0:7 = counter:7
+sel0:8 = counter:8
+sel0:9 = counter:9
+sel0:10 = counter:10
+sel0:11 = counter:11
+sel0:12 = counter:12
+sel0:13 = counter:13
+sel0:14 = counter:14
+#
+# Address latch inputs to the selector - 15 for now
+sel0:16 = add1:0
+sel0:17 = add1:1
+sel0:18 = add1:2
+sel0:19 = add1:3
+sel0:20 = add1:4
+sel0:21 = add1:5
+sel0:22 = add1:6
+sel0:23 = add1:7
+#
+sel0:24 = add2:0
+sel0:25 = add2:1
+sel0:26 = add2:2
+sel0:27 = add2:3
+sel0:28 = add2:4
+sel0:29 = add2:5
+sel0:30 = add2:5
+#
+# ram inputs from selectora
+#
+memory:16 = sel0:0
+memory:17 = sel0:1
+memory:18 = sel0:2
+memory:19 = sel0:3
+memory:20 = sel0:4
+memory:21 = sel0:5
+memory:22 = sel0:6
+memory:23 = sel0:7
+memory:24 = sel0:8
+memory:25 = sel0:9
+memory:26 = sel0:10
+memory:27 = sel0:11
+memory:28 = sel0:12
+memory:29 = sel0:13
+memory:30 = sel0:14
+#
+# ram inputs to the code latch
+code:8 = memory:0
+code:9 = memory:1
+code:10 = memory:2
+code:11 = memory:3
+code:12 = memory:4
+code:13 = memory:5
+code:14 = memory:6
+code:15 = memory:7
+#
+# ram inputs to the address latches
+#
+add1:8 = memory:0
+add1:9 = memory:1
+add1:10 = memory:2
+add1:11 = memory:3
+add1:12 = memory:4
+add1:13 = memory:5
+add1:14 = memory:6
+add1:15 = memory:7
+#
+add2:8 = memory:0
+add2:9 = memory:1
+add2:10 = memory:2
+add2:11 = memory:3
+add2:12 = memory:4
+add2:13 = memory:5
+add2:14 = memory:6
+add2:15 = memory:7
+##
+#
+# Outputs
+#
+8x1and0:8 = driver:5
+8x1and0:0 = code:0
+8x1and0:1 = code:1
+8x1and0:2 = code:2
+8x1and0:3 = code:3
+8x1and0:4 = code:4
+8x1and0:5 = code:5
+8x1and0:6 = code:6
+#
+8x1and1:8 = driver:5
+8x1and1:0 = memory:0
+8x1and1:1 = memory:1
+8x1and1:2 = memory:2
+8x1and1:3 = memory:3
+8x1and1:4 = memory:4
+8x1and1:5 = memory:5
+8x1and1:6 = memory:6
+8x1and1:7 = memory:7
+#
+8x1and0:7 = code:7
+#
+8x1and2:8 = driver:5
+8x1and2:0 = add1:0
+8x1and2:1 = add1:1
+8x1and2:2 = add1:2
+8x1and2:3 = add1:3
+8x1and2:4 = add1:4
+8x1and2:5 = add1:5
+8x1and2:6 = add1:6
+8x1and2:7 = add1:7
+#
+# ++++++++++++++++++++++++++++++
+# Outputs 0-7 contains the code byte
+# ++++++++++++++++++++++++++++++
+#
+OUTPUT:0 = 8x1and0:0
+OUTPUT:1 = 8x1and0:1
+OUTPUT:2 = 8x1and0:2
+OUTPUT:3 = 8x1and0:3
+OUTPUT:4 = 8x1and0:4
+OUTPUT:5 = 8x1and0:5
+OUTPUT:6 = 8x1and0:6
+OUTPUT:7 = 8x1and0:7
+#
+# ++++++++++++++++++++++++++++++
+# Output 8-15 contains the data
+# word when available
+# ++++++++++++++++++++++++++++++
+#
+OUTPUT:8  = 8x1and1:0
+OUTPUT:9  = 8x1and1:1
+OUTPUT:10 = 8x1and1:2
+OUTPUT:11 = 8x1and1:3
+OUTPUT:12 = 8x1and1:4
+OUTPUT:13 = 8x1and1:5
+OUTPUT:14 = 8x1and1:6
+OUTPUT:15 = 8x1and1:7
+#
+# ++++++++++++++++++++++++++++++
+# Output 16-23 contains the first 
+# address when available
+# ++++++++++++++++++++++++++++++
+#
+OUTPUT:16 = 8x1and2:0
+OUTPUT:17 = 8x1and2:1
+OUTPUT:18 = 8x1and2:2
+OUTPUT:19 = 8x1and2:3
+OUTPUT:20 = 8x1and2:4
+OUTPUT:21 = 8x1and2:5
+OUTPUT:22 = 8x1and2:6
+OUTPUT:23 = 8x1and2:7
+
+# +++++++++++++++++++++++++++++++
+# Output 24 reports when code + data are available
+# Output 25 reports first trigger when available
+# Output 26 reports second trigger when available
+#
+# Output 27 is the oscillator
+#
+# Output 28-31 are the driver counter bits
+#
+# ++++++++++++++++++++++++++++++++
+OUTPUT:24 = driver:5
+OUTPUT:25 = driver:6
+OUTPUT:26 = driver:7
+OUTPUT:27 = o:0
+OUTPUT:28 = driver:8
+OUTPUT:29 = driver:9
+OUTPUT:30 = driver:10
+#
+END_WIRING
+#
+#
+#

@@ -1,0 +1,247 @@
+#
+# This is an 8-bit latch with increment/decrement
+# The 0 input is the 'write' input
+# The 1 input is the increment flag (set to one then write)
+# The 2 input is the decrement flag (set to one then write)
+# The 3 input is the increment/decrement write
+# Inputs 8-15 are the data inputs
+# Ourputs 0-7 are the data outputs.
+#
+# The circuit retains the last value of 'data' when 'write'
+# had the value 1.
+#
+#8BIT_LATCH_8_WRITE=latch
+OR_GATE=overflow_pin
+#
+BUFFER=write
+write:0 = INPUT:0
+#
+4-1SELECT=input_pin_0
+4-1SELECT=input_pin_1
+4-1SELECT=input_pin_2
+4-1SELECT=input_pin_3
+4-1SELECT=input_pin_4
+4-1SELECT=input_pin_5
+4-1SELECT=input_pin_6
+4-1SELECT=input_pin_7
+#
+2-1SELECT=inc_select_0
+2-1SELECT=inc_select_1
+2-1SELECT=inc_select_2
+2-1SELECT=inc_select_3
+2-1SELECT=inc_select_4
+2-1SELECT=inc_select_5
+2-1SELECT=inc_select_6
+2-1SELECT=inc_select_7
+#
+2-1SELECT=dec_select_0
+2-1SELECT=dec_select_1
+2-1SELECT=dec_select_2
+2-1SELECT=dec_select_3
+2-1SELECT=dec_select_4
+2-1SELECT=dec_select_5
+2-1SELECT=dec_select_6
+2-1SELECT=dec_select_7
+#
+# 0th input to select is the data input
+#
+input_pin_0:0 = INPUT:8
+input_pin_1:0 = INPUT:9
+input_pin_2:0 = INPUT:10
+input_pin_3:0 = INPUT:11
+input_pin_4:0 = INPUT:12
+input_pin_5:0 = INPUT:13
+input_pin_6:0 = INPUT:14
+input_pin_7:0 = INPUT:15
+#
+# 1st input is the incremented output
+#
+input_pin_0:1 = inc_select_0:0
+input_pin_1:1 = inc_select_1:0
+input_pin_2:1 = inc_select_2:0
+input_pin_3:1 = inc_select_3:0
+input_pin_4:1 = inc_select_4:0
+input_pin_5:1 = inc_select_5:0
+input_pin_6:1 = inc_select_6:0
+input_pin_7:1 = inc_select_7:0
+#
+# 2nd input is the decremented output
+#
+input_pin_0:2 = dec_select_0:0
+input_pin_1:2 = dec_select_1:0
+input_pin_2:2 = dec_select_2:0
+input_pin_3:2 = dec_select_3:0
+input_pin_4:2 = dec_select_4:0
+input_pin_5:2 = dec_select_5:0
+input_pin_6:2 = dec_select_6:0
+input_pin_7:2 = dec_select_7:0
+#
+#
+input_pin_0:8 = INPUT:1
+input_pin_1:8 = INPUT:1
+input_pin_2:8 = INPUT:1
+input_pin_3:8 = INPUT:1
+input_pin_4:8 = INPUT:1
+input_pin_5:8 = INPUT:1
+input_pin_6:8 = INPUT:1
+input_pin_7:8 = INPUT:1
+#
+input_pin_0:9 = INPUT:2
+input_pin_1:9 = INPUT:2
+input_pin_2:9 = INPUT:2
+input_pin_3:9 = INPUT:2
+input_pin_4:9 = INPUT:2
+input_pin_5:9 = INPUT:2
+input_pin_6:9 = INPUT:2
+input_pin_7:9 = INPUT:2
+#
+# Selector to increment
+#
+#
+inc_select_0:0 = INPUT:16
+inc_select_1:0 = INPUT:17
+inc_select_2:0 = INPUT:18
+inc_select_3:0 = INPUT:19
+inc_select_4:0 = INPUT:20
+inc_select_5:0 = INPUT:21
+inc_select_6:0 = INPUT:22
+inc_select_7:0 = INPUT:23
+#
+inc_select_0:1 = INVERT:16
+inc_select_1:1 = INVERT:17
+inc_select_2:1 = INVERT:18
+inc_select_3:1 = INVERT:19
+inc_select_4:1 = INVERT:20
+inc_select_5:1 = INVERT:21
+inc_select_6:1 = INVERT:22
+inc_select_7:1 = INVERT:23
+#
+# Increment pin selectors 
+#
+BUFFER=choose_inc_pin0
+AND_GATE=choose_inc_pin1
+AND_GATE=choose_inc_pin2
+AND_GATE=choose_inc_pin3
+AND_GATE=choose_inc_pin4
+AND_GATE=choose_inc_pin5
+AND_GATE=choose_inc_pin6
+AND_GATE=choose_inc_pin7
+AND_GATE=choose_inc_pin8
+#
+choose_inc_pin0:0 = INPUT:1
+#
+choose_inc_pin1:0 = choose_inc_pin0:0
+choose_inc_pin1:1 = INPUT:16
+#
+choose_inc_pin2:0 = choose_inc_pin1:0
+choose_inc_pin2:1 = INPUT:17
+#
+choose_inc_pin3:0 = choose_inc_pin2:0
+choose_inc_pin3:1 = INPUT:18
+#
+choose_inc_pin4:0 = choose_inc_pin3:0
+choose_inc_pin4:1 = INPUT:19
+#
+choose_inc_pin5:0 = choose_inc_pin4:0
+choose_inc_pin5:1 = INPUT:20
+#
+choose_inc_pin6:0 = choose_inc_pin5:0
+choose_inc_pin6:1 = INPUT:21
+#
+choose_inc_pin7:0 = choose_inc_pin6:0
+choose_inc_pin7:1 = INPUT:22
+#
+choose_inc_pin8:0 = choose_inc_pin7:0
+choose_inc_pin8:1 = INPUT:23
+#
+inc_select_0:8 = choose_inc_pin0:0
+inc_select_1:8 = choose_inc_pin1:0
+inc_select_2:8 = choose_inc_pin2:0
+inc_select_3:8 = choose_inc_pin3:0
+inc_select_4:8 = choose_inc_pin4:0
+inc_select_5:8 = choose_inc_pin5:0
+inc_select_6:8 = choose_inc_pin6:0
+inc_select_7:8 = choose_inc_pin7:0
+#
+overflow_pin:0 = choose_inc_pin8:0
+#
+dec_select_0:0 = INPUT:16
+dec_select_1:0 = INPUT:17
+dec_select_2:0 = INPUT:18
+dec_select_3:0 = INPUT:19
+dec_select_4:0 = INPUT:20
+dec_select_5:0 = INPUT:21
+dec_select_6:0 = INPUT:22
+dec_select_7:0 = INPUT:23
+#
+dec_select_0:1 = INVERT:16
+dec_select_1:1 = INVERT:17
+dec_select_2:1 = INVERT:18
+dec_select_3:1 = INVERT:19
+dec_select_4:1 = INVERT:20
+dec_select_5:1 = INVERT:21
+dec_select_6:1 = INVERT:22
+dec_select_7:1 = INVERT:23
+
+# Decrement pin selectors
+#
+BUFFER=choose_dec_pin0
+AND_GATE=choose_dec_pin1
+AND_GATE=choose_dec_pin2
+AND_GATE=choose_dec_pin3
+AND_GATE=choose_dec_pin4
+AND_GATE=choose_dec_pin5
+AND_GATE=choose_dec_pin6
+AND_GATE=choose_dec_pin7
+AND_GATE=choose_dec_pin8
+#
+choose_dec_pin0:0 = INPUT:2
+#
+choose_dec_pin1:0 = choose_dec_pin0:0
+choose_dec_pin1:1 = INVERT:16
+#
+choose_dec_pin2:0 = choose_dec_pin1:0
+choose_dec_pin2:1 = INVERT:17
+#
+choose_dec_pin3:0 = choose_dec_pin2:0
+choose_dec_pin3:1 = INVERT:18
+#
+choose_dec_pin4:0 = choose_dec_pin3:0
+choose_dec_pin4:1 = INVERT:19
+#
+choose_dec_pin5:0 = choose_dec_pin4:0
+choose_dec_pin5:1 = INVERT:20
+#
+choose_dec_pin6:0 = choose_dec_pin5:0
+choose_dec_pin6:1 = INVERT:21
+#
+choose_dec_pin7:0 = choose_dec_pin6:0
+choose_dec_pin7:1 = INVERT:22
+#
+choose_dec_pin8:0 = choose_dec_pin7:0
+choose_dec_pin8:1 = INVERT:23
+#
+dec_select_0:8 = choose_dec_pin0:0
+dec_select_1:8 = choose_dec_pin1:0
+dec_select_2:8 = choose_dec_pin2:0
+dec_select_3:8 = choose_dec_pin3:0
+dec_select_4:8 = choose_dec_pin4:0
+dec_select_5:8 = choose_dec_pin5:0
+dec_select_6:8 = choose_dec_pin6:0
+dec_select_7:8 = choose_dec_pin7:0
+
+overflow_pin:1 = choose_dec_pin8:0
+#
+OUTPUT:0 = write:0
+#
+OUTPUT:8  = input_pin_0:0
+OUTPUT:9  = input_pin_1:0
+OUTPUT:10 = input_pin_2:0
+OUTPUT:11 = input_pin_3:0
+OUTPUT:12 = input_pin_4:0
+OUTPUT:13 = input_pin_5:0
+OUTPUT:14 = input_pin_6:0
+OUTPUT:15 = input_pin_7:0
+#
+OUTPUT:16 = overflow_pin:0
+#

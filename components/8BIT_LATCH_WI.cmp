@@ -1,0 +1,64 @@
+# This is an 8 BIT Latch with increment and decrement ability
+# Input 0 is the write input
+# Input 1 is the increment flag
+# Input 2 is the decrement flag
+# Inputs 8-15 are the data inputs
+# Input 16 is a duplicate write signal to be passed through the chain
+#
+# Outputs 0-7 are the data outputs
+# Output 8 is the overflow output - i.e. if an inc or dec will cause a wraparound
+# Output 16 is the write signal to allow chaining
+# To use, first set the data or one of the flags and then write
+#
+
+8BIT_LATCH_A=latch_inputs
+8BIT_LATCH=latch
+BUFFER=write
+write:0 = INPUT:16
+#
+latch_inputs:0 = INPUT:0
+latch_inputs:1 = INPUT:1
+latch_inputs:2 = INPUT:2
+#
+latch_inputs:8  = INPUT:8
+latch_inputs:9  = INPUT:9
+latch_inputs:10 = INPUT:10
+latch_inputs:11 = INPUT:11
+latch_inputs:12 = INPUT:12
+latch_inputs:13 = INPUT:13
+latch_inputs:14 = INPUT:14
+latch_inputs:15 = INPUT:15
+#
+latch_inputs:16 =  latch:0
+latch_inputs:17 =  latch:1
+latch_inputs:18 =  latch:2
+latch_inputs:19 =  latch:3
+latch_inputs:20 =  latch:4
+latch_inputs:21 =  latch:5
+latch_inputs:22 =  latch:6
+latch_inputs:23 =  latch:7
+#
+
+latch:0 = latch_inputs:0
+#
+latch:8  = latch_inputs:8
+latch:9  = latch_inputs:9
+latch:10 = latch_inputs:10
+latch:11 = latch_inputs:11
+latch:12 = latch_inputs:12
+latch:13 = latch_inputs:13
+latch:14 = latch_inputs:14
+latch:15 = latch_inputs:15
+#
+OUTPUT:0 = latch:0
+OUTPUT:1 = latch:1
+OUTPUT:2 = latch:2
+OUTPUT:3 = latch:3
+OUTPUT:4 = latch:4
+OUTPUT:5 = latch:5
+OUTPUT:6 = latch:6
+OUTPUT:7 = latch:7
+#
+OUTPUT:8 = latch_inputs:16
+#
+OUTPUT:16 = write:0

@@ -1,0 +1,25 @@
+#
+#
+#
+#
+# Two Nor gates
+#
+COMPONENTS
+#
+AND_GATE=and_gate_1
+AND_GATE=and_gate_2
+#
+END_COMPONENTS
+#
+WIRING
+and_gate_1:0 = INPUT:0
+and_gate_1:1 = INPUT:1
+and_gate_2:0 = INPUT:2
+and_gate_2:1 = INPUT:3
+OUTPUT:0     = and_gate_1:0
+OUTPUT:0     = and_gate_2:0
+END_WIRING
+#
+#
+#
+#
